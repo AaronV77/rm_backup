@@ -31,6 +31,14 @@ get_numbers () {
                         continue
                     fi
                     ;;
+                "Weeks") 
+                    if [ $(($temp)) -le 53 ]; then
+                        let temp="$(($temp)) * 7 * 24 * 3600"
+                    else
+                        echo "The number you have entered was too high..."
+                        continue
+                    fi
+                    ;;
                 "Days") 
                     if [ $(($temp)) -le 365 ]; then
                         let temp="$(($temp)) * 24 * 3600"
@@ -65,6 +73,9 @@ get_numbers () {
 get_numbers "Months"
 months=$temp
 
+get_numbers "Weeks"
+weeks=$temp
+
 get_numbers "Days"
 days=$temp
 
@@ -74,7 +85,7 @@ hours=$temp
 get_numbers "Minutes"
 minutes=$temp
 
-let total_seconds="$(($months))+$(($days))+$(($hours))+$(($minutes))"
+let total_seconds="$(($months))+$(($weeks))+$(($days))+$(($hours))+$(($minutes))"
 
 # Create a copy of the rm_alias file to not ruin the original copy.
 touch copy_alias

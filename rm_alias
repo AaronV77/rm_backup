@@ -89,6 +89,5 @@ rm () {
             fi
         fi
     done
-}
     # END
 }
