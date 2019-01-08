@@ -1,5 +1,11 @@
 #!/bin/bash
 
+#--------------------------------------------------------------------
+#Author: Aaron Anthony Valoroso
+#Date: December 17th, 2018
+#License: GNU GENERAL PUBLIC LICENSE
+#Email: valoroso99@gmail.com
+#--------------------------------------------------------------------
 echo "Thanks for using rm_backup~!"
 echo "Please enter how long would you like your files to persist for. Please"
 echo "- enter the following input values in how many you would like, and do"
@@ -17,10 +23,38 @@ get_numbers () {
         else
             # Calculate the total number of seconds from the given input.
             case $1 in
-                "Months") let temp="$(($temp)) * 30 * 24 * 3600";;
-                "Days") let temp="$(($temp)) * 24 * 3600";;
-                "Hours") let temp="$(($temp)) * 3600";;
-                "Minutes") let temp="$(($temp)) * 60";;
+                "Months") 
+                    if [ $(($temp)) -le 12 ]; then
+                        let temp="$(($temp)) * 30 * 24 * 3600"
+                    else
+                        echo "The number you have entered was too high..."
+                        continue
+                    fi
+                    ;;
+                "Days") 
+                    if [ $(($temp)) -le 365 ]; then
+                        let temp="$(($temp)) * 24 * 3600"
+                    else
+                        echo "The number you have entered was too high..."
+                        continue
+                    fi
+                    ;;
+                "Hours") 
+                    if [ $(($temp)) -le 1000 ]; then
+                        let temp="$(($temp)) * 3600"
+                    else
+                        echo "The number you have entered was too high..."
+                        continue
+                    fi
+                    ;;
+                "Minutes") 
+                    if [ $(($temp)) -le 1000 ]; then
+                        let temp="$(($temp)) * 60"
+                    else
+                        echo "The number you have entered was too high..."
+                        continue
+                    fi
+                    ;;
             esac
             break;
         fi
