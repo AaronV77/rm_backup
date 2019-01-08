@@ -1,9 +1,10 @@
+
 rm () {
     # START
     rf=0
     debug_switch=0
     incoming_array=()
-    total_duration=TOTAL-TIME
+    total_duration=259200
     current_time=$(date "+%s")
 
     if [ ! -d $HOME/.rm_backup ]; then
@@ -12,7 +13,7 @@ rm () {
         destination="$HOME/.rm_backup/"
         for file in $destination{.,}*
         do
-            file_time=$(stat ARGUMENTS $file)
+            file_time=$(stat -c %Y $file)
             if [ "$file" != $destination".usage" ] && [ "$file" != $destination'.' ] && [ "$file" != $destination".." ]; then
                 if [ $(($file_time + $total_duration)) -lt $(($current_time)) ]; then
                     if [ -d $file ]; then /bin/rm -rf $file; else /bin/rm $file; fi

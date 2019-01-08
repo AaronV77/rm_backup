@@ -162,3 +162,5 @@ fi
 
 # Delete the backup copy of the file.
 rm copy_alias
+
+echo "You need to source $HOME/.bashrc or $HOME/.bash_profile"
