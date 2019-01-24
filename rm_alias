@@ -32,28 +32,27 @@ rm () {
         if [ $debug_switch -eq 1 ]; then echo "Looking at: $1"; fi
         if [ "$1" == "-rf" ]; then rf=1; shift; continue; fi
         if [ "$1" == "-error" ]; then shift; continue; fi
-        if [[ "$1" ==  ""* ]]; then
-            len=$(echo $1 | tr -cd '*' | wc -c)
-            if [ $len -eq 1 ]; then
 
-                # If there is one star found then its not in correct spot.
-
+        len=$(echo $1 | tr -cd '*' | wc -c)
+        if [ $len -eq 1 ]; then
+            # If there is one star found then its not in correct spot.
+            if [ "$1" != ""* ]; then
                 if [ $debug_switch -eq 1 ]; then echo "There are two reasons as to why the following doesn't work..."; fi
                 if [ $debug_switch -eq 1 ]; then echo "The directory that you entered is incorrect or This command is hard to support so don't use it..."; fi
                 echo "The argument: $1 has an error, use the -error argument."
                 return
-            elif [ $len -eq 2 ]; then
-
-                # If there is two stars found then its not in the correct spot.
-
+            fi
+        elif [ $len -eq 2 ]; then
+            # If there is two stars found then its not in the correct spot.
+            if [ "$1" != ""**]; then
                 if [ $debug_switch -eq 1 ]; then echo "You have the stars in the incorrect places dude..."; fi
                 echo "The argument: $1 is incorrect."
                 return
-            elif [ $len -ge 2 ]; then
-                if [ $debug_switch -eq 1 ]; then echo "There are to many stars dude..."; fi
-                echo "The argument: $1 is incorrect."
-                return
             fi
+        elif [ $len -ge 2 ]; then
+            if [ $debug_switch -eq 1 ]; then echo "There are to many stars dude..."; fi
+            echo "The argument: $1 is incorrect."
+            return
         fi
 
         if [ -d $1 ] || [ -f $1 ]; then
