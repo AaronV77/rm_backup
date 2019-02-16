@@ -1,36 +1,83 @@
 rm () {
     # START
-    rf=0
-    debug_switch=0
-    incoming_array=()
-    total_duration=TOTAL-TIME
-    current_time=$(date "+%s")
-
-    if [ ! -d $HOME/.rm_backup ]; then
-        mkdir $HOME/.rm_backup;
-    else
-        destination="$HOME/.rm_backup/"
-        for file in $destination{.,}*
-        do
-            file_time=$(stat ARGUMENTS $file)
-            if [ "$file" != $destination".usage" ] && [ "$file" != $destination'.' ] && [ "$file" != $destination".." ]; then
-                if [ $(($file_time + $total_duration)) -lt $(($current_time)) ]; then
-                    if [ -d $file ]; then /bin/rm -rf $file; else /bin/rm $file; fi
-                fi
+    #---------------------------------------------------------------------------------------------------------
+    # This simple function will check to see if the item being backed up is in the .rm_backup directory
+    # - and if so then removes it from the folder else do nothing. If there are performance issues then
+    # - this will be the first thing to go because there are other solutions that I could use.
+    is_in_backup() {
+        incoming_arg=$(echo "${1#*/}")
+        if [ $debug_switch -eq 1 ]; then echo "Searching..."; fi
+        for item in "${backup_array[@]}"; do
+            if [ $debug_switch -eq 1 ]; then echo "The backup look at: $item and $incoming_arg"; fi
+            if [ "$item" == "$incoming_arg" ]; then
+                if [ $debug_switch -eq 1 ]; then echo "Found..."; fi
+                /bin/rm -rf $system_home/$item
             fi
         done
-    fi
 
+    }
+    #---------------------------------------------------------------------------------------------------------
+    # The following variables are declared for the system and here is a list of what they mean / do:
+        # debug_switch: Tells the system to echo helpful print statments.
+        # backup_array: Will hold all the items in the .rm_backup directory.
+        # folder_removal: Tells the system if the user is trying to delete a folder or not.
+        # total_duration: Will tell the system how long a file / folder should persist for.
+        # current_time: Will store the current time that the script is ran.
+    debug_switch=0
+    backup_array=()
+    folder_removal=0
+    total_duration=3600
+    current_time=$(date "+%s")
+    system_home="$HOME/.rm_backup/"
+    #---------------------------------------------------------------------------------------------------------
+    # This block of code will get the number of incoming arguments and check the last one to see if the
+    # - debugging flag has been given. If it is then turn on the debugging flag.
     last_argument=$(echo $#)
     last_argument=$(($last_argument - 1))
     args=($@)
-
     if [ "${args[$last_argument]}" == "-error" ]; then debug_switch=1; fi
 
+    # This block of code will check to see if the .rm_backup folder is existing. If it is not then it will
+    # - go and create the folder, or it will loop through the folder looking at all the files and deleteing
+    # - and file / folder that is past the persisting time. I also make sure not to delete the following 
+    # - items '.' or "..".
+    if [ ! -d $HOME/.rm_backup ]; then
+        mkdir $HOME/.rm_backup;
+    else
+        if [ $debug_switch -eq 1 ]; then echo "Looping through the rm_backup directory..."; fi
+        pwd=$(pwd)
+        cd $system_home
+        for file in {.,}*
+        do  
+            file_time=$(stat -c %Y $file)
+            if [ "$file" != $destination'.' ] && [ "$file" != $destination".." ]; then
+                if [ $(($file_time + $total_duration)) -lt $(($current_time)) ]; then
+                    if [ $debug_switch -eq 1 ]; then echo "Deleteing the following: $file"; fi
+                    if [ -d $file ]; then /bin/rm -rf $file; else /bin/rm $file; fi
+                else
+                    backup_array+=($file)
+                fi
+            fi
+        done
+        cd $pwd
+    fi
+    #---------------------------------------------------------------------------------------------------------
+    # This block of code will loop through the incoming arguments. The first couple of checks that I make will
+    # - will look for the "-r" and "-rf" command for folder removal. If I find it then I set a flag for the system
+    # - to make sure to delete the folder and if I don't find it then the system will not delete any directory 
+    # - is passed in. The next argument that I check is the error flag for debugging purposes. The next part is 
+    # - the hard part about this system to support. So, I get the number of stars for the given argument, then
+    # - check to see how many were found. If there was one found I make sure that the star is at the end of the 
+    # - argument, if not then error out. Next, I check to see if there were two stars, if they are not at the end
+    # - of the argument then error out. Lastly, I check to make sure that there are not more than two stars, if so 
+    # - error out. The last part of this code checks to make sure if were looking at a file or directory. If a
+    # - directory then make sure that we got the proper parameters. Then I make sure to see if the same file or 
+    # - directory is in the .rm_backup and if it is then remove it so that the update version can be moved in.
+    # - This is the basic overview of this section of code.
     while [ $# -gt 0 ];
     do
         if [ $debug_switch -eq 1 ]; then echo "Looking at: $1"; fi
-        if [ "$1" == "-rf" ]; then rf=1; shift; continue; fi
+        if [ "$1" == "-rf" ] || [ "$1" == "-r" ]; then folder_removal=1; shift; continue; fi
         if [ "$1" == "-error" ]; then shift; continue; fi
 
         len=$(echo $1 | tr -cd '*' | wc -c)
@@ -50,38 +97,33 @@ rm () {
                 return
             fi
         elif [ $len -ge 2 ]; then
-            if [ $debug_switch -eq 1 ]; then echo "There are to many stars dude..."; fi
+            if [ $debug_switch -eq 1 ]; then echo "There are to many stars in the given argument..."; fi
             echo "The argument: $1 is incorrect."
             return
         fi
 
-        if [ -d $1 ] || [ -f $1 ]; then
-            if [ $debug_switch -eq 1 ]; then echo "Going into the array: $1"; fi
-            incoming_array+=($1)
+        if [ $debug_switch -eq 1 ]; then echo "Processing: $1"; fi
+
+        if [ -d $1 ]; then
+            if [ $folder_removal -eq 1 ]; then 
+                touch $1
+                if [ $debug_switch -eq 1 ]; then echo "Backing up the following item: $1"; fi
+                is_in_backup $1
+                mv $1 $HOME/.rm_backup
+            else
+                echo "Can't delete the following: $1, because its a directory."
+            fi
+        elif [ -f $1 ]; then
+            touch $1
+            if [ $debug_switch -eq 1 ]; then echo "Backing up the following item: $1"; fi
+            is_in_backup $1
+            mv $1 $HOME/.rm_backup
         else
-            echo "This is not a file or directory: $1 "
+            echo "Can't delete the following: $1, because its a directory."
         fi
 
         shift
     done
-
-    for item in "${incoming_array[@]}"; do
-        if [ $debug_switch -eq 1 ]; then echo "Processing: $item"; fi
-
-        if [ $rf -eq 1 ]; then 
-        #   /bin/rm -rf $item
-            touch $item
-            if [ $debug_switch -eq 1 ]; then echo "Backing up the following item: $item"; fi
-            mv $item $HOME/.rm_backup
-        else
-            if [ -f $item ]; then
-                touch $item
-                if [ $debug_switch -eq 1 ]; then echo "Backing up the following item: $item"; fi
-                mv $item $HOME/.rm_backup
-            else
-                echo "Can't delete the following: $item, because its a directory."
-            fi
-        fi
-    done
+    #---------------------------------------------------------------------------------------------------------
     # END
 }

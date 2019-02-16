@@ -6,6 +6,21 @@
 #License: GNU GENERAL PUBLIC LICENSE
 #Email: valoroso99@gmail.com
 #--------------------------------------------------------------------
+# Just a basic cleanup function that cleanup after the script.
+cleanup () {
+    echo -e "\tCleaning up...."
+
+    if [ -f copy_alias ]; then
+        /bin/rm copy_alias
+    fi
+
+    echo "Exiting..."
+    cd $current_directory || cd $HOME
+    chmod 644 *
+    exit
+}
+trap cleanup 1 2 3 6
+#--------------------------------------------------------------------
 echo "Thanks for using rm_backup~!"
 echo "Please enter how long would you like your files to persist for. Please"
 echo "- enter the following input values in how many you would like, and do"
@@ -13,7 +28,8 @@ echo "- not use decimal numbers. For the month input, I will consider a month"
 echo "- to be 30 days."
 
 re='^[0-9]*$'
-
+progression=()
+#--------------------------------------------------------------------
 get_numbers () {
     while true; do
         read -p "$1: " temp
@@ -68,7 +84,7 @@ get_numbers () {
         fi
     done 
 }
-
+#--------------------------------------------------------------------
 # Get the time duration on how long the user wants the files to persist.
 get_numbers "Months"
 months=$temp
@@ -86,7 +102,7 @@ get_numbers "Minutes"
 minutes=$temp
 
 let total_seconds="$(($months))+$(($weeks))+$(($days))+$(($hours))+$(($minutes))"
-
+#--------------------------------------------------------------------
 # Create a copy of the rm_alias file to not ruin the original copy.
 touch copy_alias
 echo -e "" >> copy_alias
@@ -101,7 +117,7 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
 elif [[ "$OSTYPE" == "darwin"* ]]; then
     sed -i -e 's/ARGUMENTS/-f %m/g' copy_alias
 fi
-
+#--------------------------------------------------------------------
 # Find what lines the alias is on for both the start and end. I put comments
 # - in the file to give me key spots to find and can trust that I won't find
 # - anywhere else in the file.
@@ -139,11 +155,12 @@ else
     echo "There was an error trying to find your .bashrc or .bash_profile..."
     exit
 fi
-
+#--------------------------------------------------------------------
 # Move the first line back one, and the second line forward one to get
 # - the full length of the rm alias. Then delete the rm alaias from the
 # - file with the given range of lines.
 if [ ! -z "$line_1" ] || [ ! -z "$line_2" ]; then
+    echo "Replacing the alias in the file."
     line_1=$(($line_1 - 1))
     line_2=$(($line_2 + 1))
     if [ -f $HOME/.bashrc ]; then
@@ -160,6 +177,7 @@ elif [ -f $HOME/.bash_profile ]; then
     cat copy_alias >> $HOME/.bash_profile
 fi
 
+#--------------------------------------------------------------------
 # Delete the backup copy of the file.
 rm copy_alias
 chmod 644 *
