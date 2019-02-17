@@ -10,9 +10,8 @@
 cleanup () {
     echo -e "\tCleaning up...."
 
-    if [ -f copy_alias ]; then
-        /bin/rm copy_alias
-    fi
+    if [ -f copy_alias ]; then /bin/rm copy_alias; fi
+    if [ -f copy_alias-e ]; then /bin/rm copy_alias-e; fi
 
     echo "Exiting..."
     cd $current_directory || cd $HOME
@@ -116,6 +115,11 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
     sed -i -e 's/ARGUMENTS/-c %Y/g' copy_alias
 elif [[ "$OSTYPE" == "darwin"* ]]; then
     sed -i -e 's/ARGUMENTS/-f %m/g' copy_alias
+else
+    echo "ERROR: Can't tell what OS you have..."
+    if [ -f copy_alias ]; then /bin/rm copy_alias; fi
+    if [ -f copy_alias-e ]; then /bin/rm copy_alias-e; fi
+    exit
 fi
 #--------------------------------------------------------------------
 # Find what lines the alias is on for both the start and end. I put comments
@@ -179,6 +183,7 @@ fi
 
 #--------------------------------------------------------------------
 # Delete the backup copy of the file.
-rm copy_alias
+if [ -f copy_alias ]; then /bin/rm copy_alias; fi
+if [ -f copy_alias-e ]; then /bin/rm copy_alias-e; fi
 chmod 644 *
 echo "You need to source $HOME/.bashrc or $HOME/.bash_profile"
