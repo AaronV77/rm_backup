@@ -143,7 +143,7 @@ elif [ -f $HOME/.bash_profile ]; then
         exit
     fi
 
-    occurences=$(grep -o '# END' $HOME/.bashrc | wc -l)
+    occurences=$(grep -o '# END' $HOME/.bash_profile | wc -l)
     if [ $occurences -ge 1 ] && [ $occurences -le 0 ]; then
         eecho "The '# END' was found $occurences times in the .bash_profile..."
         exit
