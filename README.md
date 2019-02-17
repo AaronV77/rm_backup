@@ -15,7 +15,7 @@ Since these are bash scripts, please make sure to always check any scripts that 
 
 ## Prerequisites
 
-The only prerequisites is that you need to use the Bash shell on your system in order to be able to use the script and alias. I have not supported the other shells yet and have only gotten this package to work with Bash.
+The only prerequisites is that you need to use the Bash shell on your system in order to be able to use the script and alias. I have not supported the other shells yet and have only gotten this package to work with Bash. This application works on both Linux and Mac machines seemlessly. 
 
 ## Installing
 
@@ -39,6 +39,7 @@ Here is a list of the following rm commands that this alias supports and anythin
 - rm * /path/to/folder/*
 - rm -rf * /path/to/folder/*
 
+If you want the equivalent of the -v option with the normal rm command, then just add the "-error" option at the end of the input. If the "-error" option is not at the end then the debug statments will not print out. 
 
 # Author: Aaron A. Valoroso
 
