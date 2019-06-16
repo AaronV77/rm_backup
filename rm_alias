@@ -17,6 +17,35 @@ rm () {
 
     }
     #---------------------------------------------------------------------------------------------------------
+    # This simple function will output all the information need when the argument --help has been issued. If the 
+    # - help argument has been issued and the user is trying to do anything else then, the system will exit without
+    # - doing anything else.
+    help() {
+        echo "Welcome to the rm_backup utility! If you are confused as to why you are seeing this, it is due"
+        echo "- someone installing the rm_backup utility. This program overrides the rm command, to be able to"
+        echo "- uninstall this utility, remove the alias either in your .bashrc or .bash_profile. This utility"
+        echo "- will give a user a second chance to save your files / directories. For more information please"
+        echo "- go to the following: https://github.com/AaronV77/rm_backup"
+        echo ""
+        echo "Following arguments for this utility:"
+        echo "--dump:       Will delete everything in the .rm_backup directory."
+        echo "--verbose:    Will turn on the debugger and output helpful print statments."
+        echo "--help:       Will display this helpful message."
+        echo "--version:    Will output the current version of this utility."
+        echo ""
+        echo "Acceptable input for this utility:"
+        echo "- rm file"
+        echo "- rm file-1 file-2 ..."
+        echo "- rm -r folder"
+        echo "- rm -r folder-1 folder-2 ..."
+        echo "- rm -rf folder"
+        echo "- rm -rf folder-1 folder-2 ..."
+        echo "- rm *"
+        echo "- rm -rf *"
+        echo "- rm * /path/to/folder/*"
+        echo "- rm -rf * /path/to/folder/*"
+    } 
+    #---------------------------------------------------------------------------------------------------------
     # The following variables are declared for the system and here is a list of what they mean / do:
         # debug_switch: Tells the system to echo helpful print statments.
         # backup_array: Will hold all the items in the .rm_backup directory.
@@ -27,16 +56,28 @@ rm () {
     backup_array=()
     folder_removal=0
     total_duration=3600
+    VERSION="1.0.4"
     current_time=$(date "+%s")
     system_home="$HOME/.rm_backup/"
     #---------------------------------------------------------------------------------------------------------
     # This block of code will get the number of incoming arguments and check the last one to see if the
     # - debugging flag has been given. If it is then turn on the debugging flag.
-    last_argument=$(echo $#)
-    last_argument=$(($last_argument - 1))
-    args=($@)
-    if [ "${args[$last_argument]}" == "-error" ]; then debug_switch=1; fi
-
+    while [ $# -gt 0 ];
+    do
+        if [ "$1" == "--verbose" ]; then debug_switch=1; fi
+        if [ "$1" == "--help" ]; then help; return; fi
+        if [ "$1" == "--dump" ]; then 
+            /bin/rm -rf $HOME/.rm_backup/*
+            return
+        fi
+        if [ "$1" == "--version" ]; then
+            echo "Version: $VERSION"
+            echo "Written by Aaron Valoroso"
+            return
+        fi
+        shift
+    done
+    #---------------------------------------------------------------------------------------------------------    
     # This block of code will check to see if the .rm_backup folder is existing. If it is not then it will
     # - go and create the folder, or it will loop through the folder looking at all the files and deleteing
     # - and file / folder that is past the persisting time. I also make sure not to delete the following 
@@ -49,11 +90,11 @@ rm () {
         cd $system_home
         for file in {.,}*
         do  
-            file_time=$(stat ARGUMENTS "$file")
+            file_time=$(stat -c %Y "$file")
             if [ "$file" != $destination'.' ] && [ "$file" != $destination".." ]; then
                 if [ $(($file_time + $total_duration)) -lt $(($current_time)) ]; then
                     if [ $debug_switch -eq 1 ]; then echo "Deleteing the following: $file"; fi
-                    if [ -d $file ]; then /bin/rm -rf $file; else /bin/rm $file; fi
+                    if [ -d "$file" ]; then /bin/rm -rf "$file"; else /bin/rm "$file"; fi
                 else
                     backup_array+=($file)
                 fi
@@ -80,7 +121,7 @@ rm () {
         if [ "$1" == "-rf" ] || [ "$1" == "-r" ]; then folder_removal=1; shift; continue; fi
         if [ "$1" == "-error" ]; then shift; continue; fi
 
-        len=$(echo $1 | tr -cd '*' | wc -c)
+        len=$(echo "$1" | tr -cd '*' | wc -c)
         if [ $len -eq 1 ]; then
             # If there is one star found then its not in correct spot.
             if [ "$1" != ""* ]; then
