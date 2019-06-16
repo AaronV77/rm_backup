@@ -1,6 +1,6 @@
 # rm_backup
 
-Thank you for stopping by to take the time to read the README of this package. This package will hopefully ease a lot of stress on your shoulders if you are using a terminal very often and save a lot of unsaved work that may accidently get deleted. The rm_backup package is a bash alias that overshadows the original rm terminal command. This repository has an alias that will create a .rm_backup directory in your home directory. This is where all the files / directories that you try to delete will be stored for a certain amount of time. So, when you remove a directory or item, the alias will loop through the .rm_backup and do some arithmetic to see if the files and directorys that are stored in the directory should be removed. Then, the alias will move the item that you are trying to remove to the .rm_backup directory. I make sure to change the modification time of the item to ensure that it will not get deleted on the next item removal.
+Thank you for stopping by to take the time to read the README of this repository. This package will hopefully ease a lot of stress on your shoulders if you are using a terminal very often and save a lot of unsaved work that may accidently get deleted through the use of the rm command. The rm_backup repo will setup a rm bash alias that will overshadow the original rm terminal command. In the rm_backup setup script, you will be asked how long you will want your files / directories to persist for. Then every time you issue the rm command the system will loop through the directory and delete any file / directory that has persisted past their life expectency. When the rm bash alias is used the system will create a .rm_backup directiory in your home directory, and this will be where everything that gets deleted by the rm bash alias. 
 
 I am using the terminal almost everyday of my life but there are times that I accidently delete a directory or file by mistake and then on some days my whole home directory. So, the over arching concept of this alias is to give me a second chance to save my files before they get deleted permanetly. Lastly, I am no daily scripter but I'm getting there~! If you see anything that could be done differently, then by all means I'll take any comments or PR's. Thanks.
 
@@ -11,11 +11,11 @@ Just follow the upcoming sections they should make startup very clear.
 
 ## Warnings
 
-Since these are bash scripts, please make sure to always check any scripts that you are going to run on your system! One word of caution that I would have to mention is that if you are constantly deleteing files then it may be smart to have a short life span on your files so that they are getting removed at a regular rate or this .rm_backup directory will get pretty huge. Lastly, this is overshadowing the rm command and this alias does not support everything that the rm command does "yet", so keep that in mind.
+Since these are bash scripts, please make sure to always check any scripts that you are going to run on your system! A performance issue that I see with this system is if you have a long life span on your files / directories. The system will have to loop through a massive directory (not recursively) to check each items modification date. A reminder that this is bash alias is overriding the rm command, so if an issue aries with the program just run the origin rm command like such /bin/rm. Lastly, this is overshadowing the rm command and this alias does not support everything that the rm command does "yet", so keep that in mind.
 
 ## Prerequisites
 
-The only prerequisites is that you need to use the Bash shell on your system in order to be able to use the script and alias. I have not supported the other shells yet and have only gotten this package to work with Bash. This application works on both Linux and Mac machines seemlessly. 
+The only prerequisites is that you need to use the Bash shell on your system in order to be able to use the script and alias. I have not supported the other shells yet and have only gotten this package to work with Bash. This application works on both Linux and Mac machines seemlessly "I hope lol". 
 
 ## Installing
 
@@ -42,7 +42,6 @@ Here is a list of the following rm commands that this alias supports and anythin
 If you want the equivalent of the -v option with the normal rm command, then just add the "-error" option at the end of the input. If the "-error" option is not at the end then the debug statments will not print out. 
 
 # Author: Aaron A. Valoroso
-
 
 ## Inspiring Quotes
 
