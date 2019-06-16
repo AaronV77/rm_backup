@@ -119,7 +119,7 @@ rm () {
             is_in_backup "$1"
             mv "$1" $HOME/.rm_backup
         else
-            echo "Can't delete the following: $1, because its a directory."
+            echo "Can't delete the following: $1, because its nonexistent."
         fi
 
         shift
