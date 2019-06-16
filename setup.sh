@@ -104,7 +104,6 @@ let total_seconds="$(($months))+$(($weeks))+$(($days))+$(($hours))+$(($minutes))
 #--------------------------------------------------------------------
 # Create a copy of the rm_alias file to not ruin the original copy.
 touch copy_alias
-echo -e "" >> copy_alias
 cat rm_alias >> copy_alias
 
 # Find the location in the rm alias file and replace it with the total seconds.
