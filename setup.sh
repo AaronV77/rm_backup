@@ -186,4 +186,9 @@ fi
 if [ -f copy_alias ]; then /bin/rm copy_alias; fi
 if [ -f copy_alias-e ]; then /bin/rm copy_alias-e; fi
 chmod 644 *
-echo "You need to source $HOME/.bashrc or $HOME/.bash_profile"
+
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+    echo "You need to source $HOME/.bashrc."
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+    echo "You need to source $HOME/.bash_profile."
+fi
