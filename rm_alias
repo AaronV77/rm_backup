@@ -67,7 +67,7 @@ rm () {
         if [ "$1" == "--verbose" ]; then debug_switch=1; fi
         if [ "$1" == "--help" ]; then help; return; fi
         if [ "$1" == "--dump" ]; then 
-            /bin/rm -rf $HOME/.rm_backup/*
+            /bin/rm -rf $HOME/.rm_backup
             return
         fi
         if [ "$1" == "--version" ]; then
