@@ -11,7 +11,12 @@ Just follow the upcoming sections they should make startup very clear.
 
 ## Warnings
 
-Since these are bash scripts, please make sure to always check any scripts that you are going to run on your system! A performance issue that I see with this system is if you have a long life span on your files / directories. The system will have to loop through a massive directory (not recursively) to check each items modification date. A reminder that this is bash alias is overriding the rm command, so if an issue aries with the program just run the origin rm command like such /bin/rm. Lastly, this is overshadowing the rm command and this alias does not support everything that the rm command does "yet", so keep that in mind.
+A couple of warnings just to be helpful:
+- Please always check any type of shell script before running it on your system. Awarness is key.
+- There is a performance issue that can arise with this utility if you allow your files / folders to persist for a long time... The backup will get full and it will take the system a bit of time to churn through all the items in the backup to check each items life span. This is not a recursive churn but still.
+- This is bash alias is overriding the rm command, so if an issue aries with the program just run the origin rm command like such /bin/rm. Remove the bash alias from either your .bashrc or .bash_profile and please report the issue. 
+- Do not try to delete anything in the backup using the rm utility, just use the /bin/rm command. This is not supported.
+- Lastly, this is overshadowing the rm command and this alias does not support everything that the rm command does "yet", so keep that in mind.
 
 ## Prerequisites
 
