@@ -5,7 +5,7 @@ rm () {
     # - and if so then removes it from the folder else do nothing. If there are performance issues then
     # - this will be the first thing to go because there are other solutions that I could use.
     is_in_backup() {
-        incoming_arg=$(echo "${1#*/}")
+        incoming_arg=$(echo "${1%/}")
         if [ $debug_switch -eq 1 ]; then echo "Searching..."; fi
         for item in "${backup_array[@]}"; do
             if [ $debug_switch -eq 1 ]; then echo "The backup look at: $item and $incoming_arg"; fi
@@ -90,7 +90,6 @@ rm () {
         mkdir $HOME/.rm_backup;
     else
         if [ "$(find "$system_home" -mindepth 1 -print -quit 2>/dev/null)" ]; then
-            echo "There are items in the directory"
             if [ $debug_switch -eq 1 ]; then echo "Looping through the rm_backup directory..."; fi
             pwd=$(pwd)
             cd $system_home
