@@ -43,6 +43,7 @@ Here is a list of the following rm commands that this alias supports and anythin
 - rm -rf *
 - rm * /path/to/folder/*
 - rm -rf * /path/to/folder/*
+Note: There is support for a forward slash at the end of a directory.
 
 If you want the equivalent of the -v option with the normal rm command, then just add the "-error" option at the end of the input. If the "-error" option is not at the end then the debug statments will not print out. 
 
