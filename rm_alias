@@ -43,6 +43,7 @@ rm () {
         echo "- rm -rf *"
         echo "- rm * /path/to/folder/*"
         echo "- rm -rf * /path/to/folder/*"
+        echo "Note: There is support for a forward slash at the end of a directory."
     } 
     #---------------------------------------------------------------------------------------------------------
     # The following variables are declared for the system and here is a list of what they mean / do:
