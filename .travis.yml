@@ -13,9 +13,7 @@ matrix:
 
 before_install: 
   - git clone https://github.com/AaronV77/rm_backup.git
-  - pwd
-  - echo $HOME
-  - cd rm_backup/testing
+  - cd testing
   - chmod 775 setup.sh
 
 intsall:
