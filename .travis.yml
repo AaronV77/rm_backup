@@ -15,6 +15,7 @@ before_install:
   - git clone https://github.com/AaronV77/rm_backup.git
   - cd rm_backup/testing
   - chmod 775 setup.sh
+  - pwd
 
 intsall:
   - ./setup.sh
