@@ -13,7 +13,7 @@ matrix:
 
 env:
   - BACKUP="$HOME/.rm_backup"
-  
+
 before_install: 
   - git clone https://github.com/AaronV77/rm_backup.git
   - cd testing
@@ -21,6 +21,7 @@ before_install:
 
 intsall:
   - ./setup.sh
+  - source $HOME .bashrc
 
 script:
   - sh test_bash.sh || travis_terminate 1;
@@ -30,6 +31,6 @@ script:
   - bash test_duplicate_not_empty_folder_removal.sh || travis_terminate 1;
   - bash test_empty_folder_removal.sh || travis_terminate 1;
   - bash test_file_removal.sh || travis_terminate 1;
-  - bash test_non-existent_item.sh || travis_terminate 1;
+  - bash test_non-existent_item.sh || travis_terminate 0;
   - bash test_not_empty_folder_removal.sh || travis_terminate 1;
   - bash test_persistance_period.sh || travis_terminate 1;
