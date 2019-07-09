@@ -11,6 +11,9 @@ matrix:
     - os: osx
       osx_image: xcode11
 
+env:
+  - BACKUP="$HOME/.rm_backup"
+  
 before_install: 
   - git clone https://github.com/AaronV77/rm_backup.git
   - cd testing
@@ -20,7 +23,7 @@ intsall:
   - ./setup.sh
 
 script:
-  - bash test_bash.sh || travis_terminate 1;
+  - sh test_bash.sh || travis_terminate 1;
   - bash test_backup_dir.sh || travis_terminate 1;
   - bash test_duplicate_empty_folder_removal.sh || travis_terminate 1;
   - bash test_duplicate_file_removal.sh || travis_terminate 1;
