@@ -1,0 +1,31 @@
+language: bash
+
+git:
+  quiet: true
+  submodules: false
+
+os:
+  - os: linux
+    dist: xenial
+  - os: osx
+    osx_image: xcode11
+
+before_install: 
+  - git clone https://github.com/AaronV77/rm_backup.git
+  - cd rm_backup/testing
+  - chmod 775 setup.sh
+
+intsall:
+  - ./setup.sh
+
+script:
+  - bash test_bash.sh || travis_terminate 1;
+  - bash test_backup_dir.sh || travis_terminate 1;
+  - bash test_duplicate_empty_folder_removal.sh || travis_terminate 1;
+  - bash test_duplicate_file_removal.sh || travis_terminate 1;
+  - bash test_duplicate_not_empty_folder_removal.sh || travis_terminate 1;
+  - bash test_empty_folder_removal.sh || travis_terminate 1;
+  - bash test_file_removal.sh || travis_terminate 1;
+  - bash test_non-existent_item.sh || travis_terminate 1;
+  - bash test_not_empty_folder_removal.sh || travis_terminate 1;
+  - bash test_persistance_period.sh || travis_terminate 1;
