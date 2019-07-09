@@ -1,12 +1,15 @@
-language: C
+language: bash
 
 git:
   quiet: true
   submodules: false
 
-os:
-  - os: linux
-    dist: xenial
+matrix:
+  include:
+    - os: linux
+      dist: xenial
+    - os: osx
+      osx_image: xcode11
 
 before_install: 
   - git clone https://github.com/AaronV77/rm_backup.git
