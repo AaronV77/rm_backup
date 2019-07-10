@@ -18,10 +18,10 @@ before_install:
   - git clone https://github.com/AaronV77/rm_backup.git
   - cd testing
   - chmod 775 setup.sh
-  - ./setup.sh
-  - source $HOME/.bashrc
 
 script:
+  - ./setup.sh
+  - source $HOME/.bashrc
   - sh test_bash.sh || travis_terminate 1;
   - bash test_backup_dir.sh || travis_terminate 1;
   - bash test_duplicate_empty_folder_removal.sh || travis_terminate 1;
