@@ -20,7 +20,6 @@ before_install:
   - chmod 775 setup.sh
   - ./setup.sh
   - source $HOME/.bashrc
-  - cat $HOME/.bashrc
 
 script:
   - sh test_bash.sh || travis_terminate 1;
