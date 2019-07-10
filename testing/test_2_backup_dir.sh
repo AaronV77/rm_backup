@@ -1,4 +1,6 @@
 touch something.txt
+ls $HOME
+ls $HOME/.rm_backup
 $RUN something.txt
 if [ ! -d $BACKUP ]; then 
     echo "The rm_backup directory could not be found in the '$HOME' directory."
