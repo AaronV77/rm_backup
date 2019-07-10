@@ -20,9 +20,10 @@ before_install:
   - chmod 775 setup.sh
   - ./setup.sh
   - source $HOME/.bashrc
-  
+
 script:
   - sh test_bash.sh || travis_terminate 1;
+  - bash test_sourcing.sh || travis_terminate 1;
   - bash test_backup_dir.sh || travis_terminate 1;
   - bash test_duplicate_empty_folder_removal.sh || travis_terminate 1;
   - bash test_duplicate_file_removal.sh || travis_terminate 1;
