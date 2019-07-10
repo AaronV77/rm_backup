@@ -1,5 +1,5 @@
 touch something.txt
-rm something.txt
+rm something.txt --verbose
 
 if [ ! -d $BACKUP ]; then 
     ls -la $HOME
