@@ -24,7 +24,7 @@ script:
   - sh test_1_bash.sh || travis_terminate 1;
   - bash ../setup.sh --test
   - bash test_2_backup_dir.sh || travis_terminate 1;
-  - bash test_3_ file_removal.sh || travis_terminate 1;
+  - bash test_3_file_removal.sh || travis_terminate 1;
   - bash test_duplicate_empty_folder_removal.sh || travis_terminate 1;
   - bash test_duplicate_file_removal.sh || travis_terminate 1;
   - bash test_duplicate_not_empty_folder_removal.sh || travis_terminate 1;
