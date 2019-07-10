@@ -13,25 +13,23 @@ matrix:
 
 env:
   - BACKUP="$HOME/.rm_backup"
+  - RUN="/bin/bash $HOME/.rm_backup/script/rm_alias.sh"
 
 before_install: 
   - git clone https://github.com/AaronV77/rm_backup.git
   - cd testing
   - chmod 775 setup.sh
-  - shopt -s expand_aliases
-  - chmod 775 setup.sh
-  - bash setup.sh
-  - source $HOME/.bashrc
-  
+
 script:
-  - sh test_bash.sh || travis_terminate 1;
-  - bash test_sourcing.sh || travis_terminate 1;
-  - bash test_backup_dir.sh || travis_terminate 1;
+  - sh test_1_bash.sh || travis_terminate 1;
+  - bash setup.sh
+  - bash test_2_backup_dir.sh || travis_terminate 1;
+  - bash test_3_ file_removal.sh || travis_terminate 1;
   - bash test_duplicate_empty_folder_removal.sh || travis_terminate 1;
   - bash test_duplicate_file_removal.sh || travis_terminate 1;
   - bash test_duplicate_not_empty_folder_removal.sh || travis_terminate 1;
   - bash test_empty_folder_removal.sh || travis_terminate 1;
-  - bash test_file_removal.sh || travis_terminate 1;
+
   - bash test_non-existent_item.sh || travis_terminate 0;
   - bash test_not_empty_folder_removal.sh || travis_terminate 1;
   - bash test_persistance_period.sh || travis_terminate 1;
