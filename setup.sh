@@ -141,39 +141,35 @@ if [ ! -d $HOME/.rm_backup/ ]; then mkdir $HOME/.rm_backup/; fi
 if [ ! -d $HOME/.rm_backup/script ]; then mkdir $HOME/.rm_backup/script; fi
 if [ ! -d $HOME/.rm_backup/backup ]; then mkdir $HOME/.rm_backup/backup; fi
 
-occurences=$(grep -o "rm ()" $HOME/.bashrc | wc -l)
-if [ $occurences == 0 ]; then
-    if [[ "$OSTYPE" == "linux-gnu" ]]; then
-        echo "rm () { bash $HOME/.rm_backup/script/rm_alias.sh \$@ ; }" >> $HOME/.bashrc
-        echo "You need to source $HOME/.bashrc"
-    elif [[ "$OSTYPE" == "darwin"* ]]; then 
-        echo "rm () { bash $HOME/.rm_backup/script/rm_alias.sh \$@ ; }" >> $HOME/.bash_profile
-        echo "You need to source $HOME/.bash_profile"
-    else 
-        echo "You are using a operating system that is not supported."
+if [ $test_switch == 1 ]; then
+    occurences=$(grep -o "rm ()" $HOME/.bashrc | wc -l)
+    if [ $occurences == 0 ]; then
+        if [[ "$OSTYPE" == "linux-gnu" ]]; then
+            echo "rm () { bash $HOME/.rm_backup/script/rm_alias.sh \$@ ; }" >> $HOME/.bashrc
+            echo "You need to source $HOME/.bashrc"
+        elif [[ "$OSTYPE" == "darwin"* ]]; then 
+            echo "rm () { bash $HOME/.rm_backup/script/rm_alias.sh \$@ ; }" >> $HOME/.bash_profile
+            echo "You need to source $HOME/.bash_profile"
+        else 
+            echo "You are using a operating system that is not supported."
+            exit 1
+        fi
+    elif [ $occurences == 1 ]; then
+        line_number=$(grep -nr "rm ()" $HOME/.bashrc | cut -d: -f1)
+        sed -i $line_number'd' $HOME/.bashrc
+    elif [ $occurences > 1 ]; then
+        if [[ "$OSTYPE" == "linux-gnu" ]]; then
+            echo "Your .bashrc is littered with rm () aliases, please clean up."
+        elif [[ "$OSTYPE" == "darwin"* ]]; then 
+            echo "Your .bash_profile is littered with rm () aliases, please clean up."
+        fi
         exit 1
     fi
-elif [ $occurences == 1 ]; then
-    line_number=$(grep -nr "rm ()" $HOME/.bashrc | cut -d: -f1)
-    sed -i $line_number'd' $HOME/.bashrc
-elif [ $occurences > 1 ]; then
-    if [[ "$OSTYPE" == "linux-gnu" ]]; then
-        echo "Your .bashrc is littered with rm () aliases, please clean up."
-    elif [[ "$OSTYPE" == "darwin"* ]]; then 
-        echo "Your .bash_profile is littered with rm () aliases, please clean up."
-    fi
-    exit 1
 fi
-
 
 if [ -f $HOME/.rm_backup/script/rm_alias.sh ]; then /bin/rm $HOME/.rm_backup/script/rm_alias.sh; fi
 cat copy_alias >> $HOME/.rm_backup/script/rm_alias.sh
 chmod 775 $HOME/.rm_backup/script/rm_alias.sh
-if [[ "$OSTYPE" == "linux-gnu" ]]; then
-    
-elif [[ "$OSTYPE" == "darwin"* ]]; then
-    
-fi
 
 #--------------------------------------------------------------------
 # Delete the backup copy of the file.
