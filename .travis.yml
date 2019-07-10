@@ -18,8 +18,6 @@ before_install:
   - git clone https://github.com/AaronV77/rm_backup.git
   - cd testing
   - chmod 775 setup.sh
-
-intsall:
   - ./setup.sh
   - source $HOME/.bashrc
   - cat $HOME/.bashrc
