@@ -75,12 +75,6 @@ get_numbers () {
     done 
 }
 #--------------------------------------------------------------------
-echo "Thanks for using rm_backup~!"
-echo "Please enter how long would you like your files to persist for. Please"
-echo "- enter the following input values in how many you would like, and do"
-echo "- not use decimal numbers. For the month input, I will consider a month"
-echo "- to be 30 days."
-
 re='^[0-9]*$'
 progression=()
 test_switch=0
@@ -94,6 +88,11 @@ do
 done
 #--------------------------------------------------------------------
 if [ $test_switch == 0 ]; then
+    echo "Thanks for using rm_backup~!"
+    echo "Please enter how long would you like your files to persist for. Please"
+    echo "- enter the following input values in how many you would like, and do"
+    echo "- not use decimal numbers. For the month input, I will consider a month"
+    echo "- to be 30 days."
     # Get the time duration on how long the user wants the files to persist.
     get_numbers "Months"
     months=$temp
@@ -163,6 +162,7 @@ fi
 
 if [ $test_switch == 0 ]; then
     if [ -f $HOME/.rm_backup/script/rm_alias.sh ]; then /bin/rm $HOME/.rm_backup/script/rm_alias.sh; fi
+    touch $HOME/.rm_backup/script/rm_alias.sh
     cat copy_alias >> $HOME/.rm_backup/script/rm_alias.sh
     chmod 775 $HOME/.rm_backup/script/rm_alias.sh
     if [[ "$OSTYPE" == "linux-gnu" ]]; then
