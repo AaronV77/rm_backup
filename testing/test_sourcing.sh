@@ -1,5 +1,5 @@
 shopt -s expand_aliases
-alias name='echo "Aaaron Valoroso"' >> $HOME/.bashrc
+alias name='echo "Aaron Valoroso"' >> $HOME/.bashrc
 source $HOME/.bashrc
 output=$(name)
 if [ "$output" != "Aaron Valoroso" ]; then
