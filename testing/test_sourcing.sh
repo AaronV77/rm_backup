@@ -1,3 +1,4 @@
+shopt -s expand_aliases
 alias name='echo "Aaaron Valoroso"' >> $HOME/.bashrc
 source $HOME/.bashrc
 output=$(name)
