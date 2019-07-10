@@ -120,7 +120,7 @@ let total_seconds="$(($months))+$(($weeks))+$(($days))+$(($hours))+$(($minutes))
 #--------------------------------------------------------------------
 # Create a copy of the rm_alias file to not ruin the original copy.
 touch copy_alias
-cat rm_alias.sh >> copy_alias
+cat ../rm_alias.sh >> copy_alias
 
 # Find the location in the rm alias file and replace it with the total seconds.
 sed -i -e 's/TOTAL-TIME/'$total_seconds'/g' copy_alias
