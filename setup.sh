@@ -163,6 +163,9 @@ fi
 if [ $test_switch == 0 ]; then
     if [ -f $HOME/.rm_backup/script/rm_alias.sh ]; then /bin/rm $HOME/.rm_backup/script/rm_alias.sh; fi
     cat copy_alias >> $HOME/.rm_backup/script/rm_alias.sh
+    echo "-----------------------------------"
+    ls $HOME/.rm_backup/script/
+    echo "-----------------------------------"
     chmod 775 $HOME/.rm_backup/script/rm_alias.sh
     if [[ "$OSTYPE" == "linux-gnu" ]]; then
         echo "You need to source $HOME/.bashrc"
