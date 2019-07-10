@@ -18,10 +18,7 @@ before_install:
   - git clone https://github.com/AaronV77/rm_backup.git
   - cd testing
   - chmod 775 setup.sh
-
-intsall:
-  - apt install --only-upgrade bash
-
+  - shopt -s expand_aliases
 
 script:
   - sh test_bash.sh || travis_terminate 1;
