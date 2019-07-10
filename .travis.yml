@@ -21,7 +21,8 @@ before_install:
 
 intsall:
   - ./setup.sh
-  - source $HOME .bashrc
+  - source $HOME/.bashrc
+  - cat $HOME/.bashrc
 
 script:
   - sh test_bash.sh || travis_terminate 1;
