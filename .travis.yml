@@ -17,8 +17,6 @@ env:
 before_install: 
   - git clone https://github.com/AaronV77/rm_backup.git
 
-instal: true 
-
 script:
   - sh test_bash.sh || travis_terminate 1;
   - bash test_setup.sh || travis_terminate 1;
