@@ -4,16 +4,17 @@ git:
   quiet: true
   submodules: false
 
-env:
-  - BACKUP="$HOME/.rm_backup"
-  - RUN="/bin/bash $HOME/.rm_backup/script/rm_alias.sh"
-
 matrix:
   include:
     - os: linux
       dist: xenial
     - os: osx
       osx_image: xcode11
+
+env:
+  global:
+    - BACKUP="$HOME/.rm_backup"
+    - RUN="/bin/bash $HOME/.rm_backup/script/rm_alias.sh"
 
 before_install: 
   - git clone https://github.com/AaronV77/rm_backup.git
