@@ -1,15 +1,7 @@
-source $HOME/.bashrc
 touch something.txt
 rm something.txt --verbose
 echo "=============================="
-cat $HOME/.bashrc
-echo "=============================="
-echo $HOME
-pwd
-echo "=============================="
 ls -la $HOME
-echo "=============================="
-ls -la $HOME/build/AaronV77
 echo "=============================="
 if [ ! -d $BACKUP ]; then 
     echo "The rm_backup directory could not be found in the '$HOME' directory."
