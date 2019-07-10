@@ -162,7 +162,6 @@ fi
 
 if [ $test_switch == 0 ]; then
     if [ -f $HOME/.rm_backup/script/rm_alias.sh ]; then /bin/rm $HOME/.rm_backup/script/rm_alias.sh; fi
-    touch $HOME/.rm_backup/script/rm_alias.sh
     cat copy_alias >> $HOME/.rm_backup/script/rm_alias.sh
     chmod 775 $HOME/.rm_backup/script/rm_alias.sh
     if [[ "$OSTYPE" == "linux-gnu" ]]; then

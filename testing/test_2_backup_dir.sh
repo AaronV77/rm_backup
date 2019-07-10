@@ -1,11 +1,4 @@
 touch something.txt
-echo "8888888888888888888888888"
-ls $HOME/.rm_backup/script
-echo "8888888888888888888888888"
-ls $HOME
-ls $HOME/.rm_backup
-
-
 $RUN something.txt
 if [ ! -d $BACKUP ]; then 
     echo "The rm_backup directory could not be found in the '$HOME' directory."
