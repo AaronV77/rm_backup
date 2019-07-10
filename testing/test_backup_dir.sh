@@ -4,6 +4,9 @@ rm something.txt --verbose
 echo "=============================="
 cat $HOME/.bashrc
 echo "=============================="
+echo $HOME
+pwd
+echo "=============================="
 if [ ! -d $BACKUP ]; then 
     echo "The rm_backup directory could not be found in the '$HOME' directory."
     exit 1
