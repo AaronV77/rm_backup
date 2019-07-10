@@ -145,8 +145,13 @@ occurences=$(grep -o "rm ()" $HOME/.bashrc | wc -l)
 if [ $occurences == 0 ]; then
     if [[ "$OSTYPE" == "linux-gnu" ]]; then
         echo "rm () { bash $HOME/.rm_backup/script/rm_alias.sh \$@ ; }" >> $HOME/.bashrc
+        echo "You need to source $HOME/.bashrc"
     elif [[ "$OSTYPE" == "darwin"* ]]; then 
         echo "rm () { bash $HOME/.rm_backup/script/rm_alias.sh \$@ ; }" >> $HOME/.bash_profile
+        echo "You need to source $HOME/.bash_profile"
+    else 
+        echo "You are using a operating system that is not supported."
+        exit 1
     fi
 elif [ $occurences == 1 ]; then
     line_number=$(grep -nr "rm ()" $HOME/.bashrc | cut -d: -f1)
@@ -160,18 +165,14 @@ elif [ $occurences > 1 ]; then
     exit 1
 fi
 
-if [ $test_switch == 0 ]; then
-    if [ -f $HOME/.rm_backup/script/rm_alias.sh ]; then /bin/rm $HOME/.rm_backup/script/rm_alias.sh; fi
-    cat copy_alias >> $HOME/.rm_backup/script/rm_alias.sh
-    echo "-----------------------------------"
-    ls $HOME/.rm_backup/script/
-    echo "-----------------------------------"
-    chmod 775 $HOME/.rm_backup/script/rm_alias.sh
-    if [[ "$OSTYPE" == "linux-gnu" ]]; then
-        echo "You need to source $HOME/.bashrc"
-    elif [[ "$OSTYPE" == "darwin"* ]]; then
-        echo "You need to source $HOME/.bash_profile"
-    fi
+
+if [ -f $HOME/.rm_backup/script/rm_alias.sh ]; then /bin/rm $HOME/.rm_backup/script/rm_alias.sh; fi
+cat copy_alias >> $HOME/.rm_backup/script/rm_alias.sh
+chmod 775 $HOME/.rm_backup/script/rm_alias.sh
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+    
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+    
 fi
 
 #--------------------------------------------------------------------
