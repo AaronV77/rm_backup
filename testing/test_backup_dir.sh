@@ -1,5 +1,8 @@
 shopt -s expand_aliases
 source $HOME/.bashrc
+echo "----------------------------"
+cat $HOME/.bashrc
+echo "----------------------------"
 touch something.txt
 rm something.txt --verbose
 if [ ! -d $BACKUP ]; then 
