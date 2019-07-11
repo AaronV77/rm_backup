@@ -1,9 +1,9 @@
 mkdir something_1
 $RUN -rf something_1
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
-    folder_time_1=$(stat -c %Y $BACKUP/backup/something.txt)
+    folder_time_1=$(stat -c %Y $BACKUP/backup/something_1)
 elif [[ "$OSTYPE" == "darwin"* ]]; then
-    folder_time_1=$(stat -f %m $BACKUP/backup/something.txt)
+    folder_time_1=$(stat -f %m $BACKUP/backup/something_1)
 fi
 
 sleep 10
@@ -11,9 +11,9 @@ sleep 10
 mkdir something_2
 $RUN -rf something_2
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
-    folder_time_2=$(stat -c %Y $BACKUP/backup/something.txt)
+    folder_time_2=$(stat -c %Y $BACKUP/backup/something_2)
 elif [[ "$OSTYPE" == "darwin"* ]]; then
-    folder_time_2=$(stat -f %m $BACKUP/backup/something.txt)
+    folder_time_2=$(stat -f %m $BACKUP/backup/something_2)
 fi
 
 /bin/rm -rf $BACKUP/backup/*
