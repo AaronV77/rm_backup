@@ -14,6 +14,7 @@ fi
 
 if [ ! -d something ]; then
     echo "The existing folder did not stay around after deleteing everything in the folder."
+    $RUN -rf something
     exit 1
 fi
 $RUN -rf something

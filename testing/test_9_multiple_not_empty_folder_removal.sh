@@ -24,6 +24,9 @@ if [ $folder_1 != 3 ]; then
     exit 1
 fi
 if [[ $folder_2 != 1 || $folder_3 != 1 || $folder_4 != 1 ]]; then
+    echo "Folder-2: $folder_2"
+    echo "Folder-3: $folder_3"
+    echo "Folder-4: $folder_4"
     echo "Not everything made it over to the backup in one of the folders."
     exit 1
 fi
