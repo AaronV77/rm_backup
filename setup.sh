@@ -16,18 +16,9 @@ cleanup () {
     echo "Exiting..."
     cd $current_directory || cd $HOME
     chmod 644 *
-    exit
+    exit 1
 }
 trap cleanup 1 2 3 6
-#--------------------------------------------------------------------
-echo "Thanks for using rm_backup~!"
-echo "Please enter how long would you like your files to persist for. Please"
-echo "- enter the following input values in how many you would like, and do"
-echo "- not use decimal numbers. For the month input, I will consider a month"
-echo "- to be 30 days."
-
-re='^[0-9]*$'
-progression=()
 #--------------------------------------------------------------------
 get_numbers () {
     while true; do
@@ -84,27 +75,52 @@ get_numbers () {
     done 
 }
 #--------------------------------------------------------------------
-# Get the time duration on how long the user wants the files to persist.
-get_numbers "Months"
-months=$temp
+re='^[0-9]*$'
+progression=()
+test_switch=0
 
-get_numbers "Weeks"
-weeks=$temp
+while [ $# -gt 0 ];
+do
+    if [ "$1" == "--test" ]; then 
+        test_switch=1
+    fi
+    shift
+done
+#--------------------------------------------------------------------
+if [ $test_switch == 0 ]; then
+    echo "Thanks for using rm_backup~!"
+    echo "Please enter how long would you like your files to persist for. Please"
+    echo "- enter the following input values in how many you would like, and do"
+    echo "- not use decimal numbers. For the month input, I will consider a month"
+    echo "- to be 30 days."
+    # Get the time duration on how long the user wants the files to persist.
+    get_numbers "Months"
+    months=$temp
 
-get_numbers "Days"
-days=$temp
+    get_numbers "Weeks"
+    weeks=$temp
 
-get_numbers "Hours"
-hours=$temp
+    get_numbers "Days"
+    days=$temp
 
-get_numbers "Minutes"
-minutes=$temp
+    get_numbers "Hours"
+    hours=$temp
+
+    get_numbers "Minutes"
+    minutes=$temp
+else
+    let months="0 * 30 * 24 * 3600"
+    let weeks="0 * 7 * 24 * 3600"
+    let days="0 * 24 * 3600"
+    let hours="0 * 3600"
+    let minutes="1 * 60"
+fi
 
 let total_seconds="$(($months))+$(($weeks))+$(($days))+$(($hours))+$(($minutes))"
 #--------------------------------------------------------------------
 # Create a copy of the rm_alias file to not ruin the original copy.
 touch copy_alias
-cat rm_alias >> copy_alias
+cat rm_alias.sh >> copy_alias
 
 # Find the location in the rm alias file and replace it with the total seconds.
 sed -i -e 's/TOTAL-TIME/'$total_seconds'/g' copy_alias
@@ -118,76 +134,44 @@ else
     echo "ERROR: Can't tell what OS you have..."
     if [ -f copy_alias ]; then /bin/rm copy_alias; fi
     if [ -f copy_alias-e ]; then /bin/rm copy_alias-e; fi
-    exit
-fi
-#--------------------------------------------------------------------
-# Find what lines the alias is on for both the start and end. I put comments
-# - in the file to give me key spots to find and can trust that I won't find
-# - anywhere else in the file.
-if [ -f $HOME/.bashrc ]; then
-    occurences=$(grep -o '# START' $HOME/.bashrc | wc -l)
-    if [ $occurences -gt 1 ]; then
-        echo "The '# START' was found $occurences times in the .bashrc..."
-        exit
-    fi
-
-    occurences=$(grep -o '# END' $HOME/.bashrc | wc -l)
-    if [ $occurences -gt 1 ]; then
-        echo "The '# END' was found $occurences times in the .bashrc..."
-        exit
-    fi
-
-    line_1=$(grep -n "# START" $HOME/.bashrc | cut -d : -f 1)
-    line_2=$(grep -n "# END" $HOME/.bashrc | cut -d : -f 1)
-elif [ -f $HOME/.bash_profile ]; then
-    occurences=$(grep -o '# START' $HOME/.bash_profile | wc -l)
-    if [ $occurences -ge 1 ] && [ $occurences -le 0 ]; then
-        echo "The '# START' was found $occurences times in the .bash_profile..."
-        exit
-    fi
-
-    occurences=$(grep -o '# END' $HOME/.bash_profile | wc -l)
-    if [ $occurences -ge 1 ] && [ $occurences -le 0 ]; then
-        eecho "The '# END' was found $occurences times in the .bash_profile..."
-        exit
-    fi
-
-    line_1=$(grep -n "# START" $HOME/.bash_profile | cut -d : -f 1)
-    line_2=$(grep -n "# END" $HOME/.bash_profile | cut -d : -f 1)
-else
-    echo "There was an error trying to find your .bashrc or .bash_profile..."
-    exit
-fi
-#--------------------------------------------------------------------
-# Move the first line back one, and the second line forward one to get
-# - the full length of the rm alias. Then delete the rm alaias from the
-# - file with the given range of lines.
-if [ ! -z "$line_1" ] || [ ! -z "$line_2" ]; then
-    echo "Replacing the alias in the file."
-    line_1=$(($line_1 - 1))
-    line_2=$(($line_2 + 1))
-    if [ -f $HOME/.bashrc ]; then
-        sed -i -e "$(($line_1)),$(($line_2))d" $HOME/.bashrc
-    elif [ -f $HOME/.bash_profile ]; then
-        sed -i -e "$(($line_1)),$(($line_2))d" $HOME/.bash_profile
-    fi
+    exit 1
 fi
 
-# Add the alias to the end of the file.
-if [ -f $HOME/.bashrc ]; then
-    cat copy_alias >> $HOME/.bashrc
-elif [ -f $HOME/.bash_profile ]; then
-    cat copy_alias >> $HOME/.bash_profile
+if [ ! -d $HOME/.rm_backup/ ]; then mkdir $HOME/.rm_backup/; fi
+if [ ! -d $HOME/.rm_backup/script ]; then mkdir $HOME/.rm_backup/script; fi
+if [ ! -d $HOME/.rm_backup/backup ]; then mkdir $HOME/.rm_backup/backup; fi
+
+occurences=$(grep -o "rm ()" $HOME/.bashrc | wc -l)
+if [ $occurences == 0 ]; then
+    if [ $test_switch == 0 ]; then
+        if [[ "$OSTYPE" == "linux-gnu" ]]; then
+            echo "rm () { bash $HOME/.rm_backup/script/rm_alias.sh \$@ ; }" >> $HOME/.bashrc
+            echo "You need to source $HOME/.bashrc"
+        elif [[ "$OSTYPE" == "darwin"* ]]; then 
+            echo "rm () { bash $HOME/.rm_backup/script/rm_alias.sh \$@ ; }" >> $HOME/.bash_profile
+            echo "You need to source $HOME/.bash_profile"
+        else 
+            echo "You are using a operating system that is not supported."
+            exit 1
+        fi
+    fi
+elif [ $occurences == 1 ]; then
+    line_number=$(grep -nr "rm ()" $HOME/.bashrc | cut -d: -f1)
+    sed -i $line_number'd' $HOME/.bashrc
+elif [ $occurences > 1 ]; then
+    if [[ "$OSTYPE" == "linux-gnu" ]]; then
+        echo "Your .bashrc is littered with rm () aliases, please clean up."
+    elif [[ "$OSTYPE" == "darwin"* ]]; then 
+        echo "Your .bash_profile is littered with rm () aliases, please clean up."
+    fi
+    exit 1
 fi
+
+if [ -f $HOME/.rm_backup/script/rm_alias.sh ]; then /bin/rm $HOME/.rm_backup/script/rm_alias.sh; fi
+cat copy_alias >> $HOME/.rm_backup/script/rm_alias.sh
+chmod 775 $HOME/.rm_backup/script/rm_alias.sh
 
 #--------------------------------------------------------------------
 # Delete the backup copy of the file.
 if [ -f copy_alias ]; then /bin/rm copy_alias; fi
 if [ -f copy_alias-e ]; then /bin/rm copy_alias-e; fi
-chmod 644 *
-
-if [[ "$OSTYPE" == "linux-gnu" ]]; then
-    echo "You need to source $HOME/.bashrc."
-elif [[ "$OSTYPE" == "darwin"* ]]; then
-    echo "You need to source $HOME/.bash_profile."
-fi
