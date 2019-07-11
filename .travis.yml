@@ -29,7 +29,7 @@ script:
   - bash test_5_not_empty_folder_removal.sh || travis_terminate 1;
   - bash test_6_non-existent_item.sh || travis_terminate 1;
   - bash test_7_multiple_file_removal.sh || travis_terminate 1;
-  - bash test_8_multiple_empty_folder_removal || travis_terminate 1;
+  - bash test_8_multiple_empty_folder_removal.sh || travis_terminate 1;
   - bash test_9_multiple_not_empty_folder_removal || travis_terminate 1;
   - bash test_10_duplicate_file_removal.sh || travis_terminate 1;
   - bash test_11_duplicate_empty_folder_removal.sh || travis_terminate 1;
