@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/AaronV77/rm_backup.svg?branch=master)](https://travis-ci.org/AaronV77/rm_backup)
+
 # rm_backup
 
 Thank you for stopping by to take the time to read the README of this repository. This package will hopefully ease a lot of stress on your shoulders if you are using a terminal very often and save a lot of unsaved work that may accidently get deleted through the use of the rm command. The rm_backup repo will setup a rm bash alias that will overshadow the original rm terminal command. In the rm_backup setup script, you will be asked how long you will want your files / directories to persist for. Then every time you issue the rm command the system will loop through the directory and delete any file / directory that has persisted past their life expectency. When the rm bash alias is used the system will create a .rm_backup directiory in your home directory, and this will be where everything that gets deleted by the rm bash alias. 
