@@ -1,3 +1,13 @@
+#--------------------------------------------------------------------
+#Author: Aaron Anthony Valoroso
+#Date: July 11th, 2019
+#License: GNU GENERAL PUBLIC LICENSE
+#Email: valoroso99@gmail.com
+#--------------------------------------------------------------------
+# General File Overview: The mission for this file is to check to make
+# sure that the system is removing files from the backup when their
+# persistence time has expired.
+#--------------------------------------------------------------------
 touch something_1.txt
 $RUN something_1.txt
 

@@ -1,3 +1,14 @@
+#--------------------------------------------------------------------
+#Author: Aaron Anthony Valoroso
+#Date: July 11th, 2019
+#License: GNU GENERAL PUBLIC LICENSE
+#Email: valoroso99@gmail.com
+#--------------------------------------------------------------------
+# General File Overview: The mission for this file is to make sure that
+# the system is able to remove multiple directories that have contents
+# at once. There is also a check to make sure that the contents of each
+# directory made it to the backup directory as well.
+#--------------------------------------------------------------------
 mkdir something_1
 cd something_1
 touch something.txt
