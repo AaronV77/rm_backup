@@ -1,3 +1,14 @@
+#--------------------------------------------------------------------
+#Author: Aaron Anthony Valoroso
+#Date: July 11th, 2019
+#License: GNU GENERAL PUBLIC LICENSE
+#Email: valoroso99@gmail.com
+#--------------------------------------------------------------------
+# General File Overview: The mission for this file is to check to make
+# sure that the system is able to remove a folder with the same name
+# and contents twice. The objective is to see if the old version gets
+# removed and the new one takes its place in the backup directory.
+#--------------------------------------------------------------------
 mkdir something_1
 cd something_1
 touch something.txt

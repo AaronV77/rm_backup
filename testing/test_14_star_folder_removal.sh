@@ -1,3 +1,12 @@
+#--------------------------------------------------------------------
+#Author: Aaron Anthony Valoroso
+#Date: July 11th, 2019
+#License: GNU GENERAL PUBLIC LICENSE
+#Email: valoroso99@gmail.com
+#--------------------------------------------------------------------
+# General File Overview: The mission for this file is to make sure that
+# the system is able to clear out the contents of a directory.
+#--------------------------------------------------------------------
 mkdir something
 cd something
 touch something_1.txt something_2.txt

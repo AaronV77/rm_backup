@@ -1,7 +1,15 @@
-#---------------------------------------------------------------------------------------------------------
-# This simple function will check to see if the item being backed up is in the .rm_backup directory
-# - and if so then removes it from the folder else do nothing. If there are performance issues then
-# - this will be the first thing to go because there are other solutions that I could use.
+#--------------------------------------------------------------------
+#Author: Aaron Anthony Valoroso
+#Date: July 11th, 2019
+#License: GNU GENERAL PUBLIC LICENSE
+#Email: valoroso99@gmail.com
+#--------------------------------------------------------------------
+# General File Overview: The mission for this file is to be able to 
+# remove any artifact of the rm_backup application. 
+#--------------------------------------------------------------------
+# This simple function will check to see if the item being backed up 
+# - is in the .rm_backup directory and if so then remove it from the 
+# - folder, else do nothing and move on. 
 is_in_backup() {
     incoming_arg=$(echo "${1%/}")
     if [ $debug_switch -eq 1 ]; then echo "Searching..."; fi
@@ -13,10 +21,11 @@ is_in_backup() {
         fi
     done
 }
-#---------------------------------------------------------------------------------------------------------
-# This simple function will output all the information need when the argument --help has been issued. If the 
-# - help argument has been issued and the user is trying to do anything else then, the system will exit without
-# - doing anything else.
+#--------------------------------------------------------------------
+# This simple function will output all the information needed when the 
+# - argument "--help" has been issued. If the help argument has been 
+# - issued and the user is trying to do anything else then, the system 
+# - will exit without doing anything else.
 help() {
     echo "Welcome to the rm_backup utility! If you are confused as to why you are seeing this, it is due"
     echo "- someone installing the rm_backup utility. This program overrides the rm command, to be able to"
@@ -43,24 +52,27 @@ help() {
     echo "- rm -rf * /path/to/folder/*"
     echo "Note: There is support for a forward slash at the end of a directory."
 } 
-#---------------------------------------------------------------------------------------------------------
-# The following variables are declared for the system and here is a list of what they mean / do:
+#--------------------------------------------------------------------
+# The following variables are declared for the system and here is a list 
+# - of what they mean / do:
     # debug_switch: Tells the system to echo helpful print statments.
     # backup_array: Will hold all the items in the .rm_backup directory.
     # folder_removal: Tells the system if the user is trying to delete a folder or not.
     # total_duration: Will tell the system how long a file / folder should persist for.
+    # VERSION: Will output the current version for the system.
     # current_time: Will store the current time that the script is ran.
+    # system_home: Will store the backup path for all files and folders to be backed up too.
+# In the last section of the code I loop through the incoming arguments
+# - from the user and execute any if given. 
 debug_switch=0
 backup_array=()
 incoming_input_array=()
 folder_removal=0
 total_duration=TOTAL-TIME
-VERSION="1.0.6"
+VERSION="1.0.0"
 current_time=$(date "+%s")
 system_home="$HOME/.rm_backup/backup"
-#---------------------------------------------------------------------------------------------------------
-# This block of code will get the number of incoming arguments and check the last one to see if the
-# - debugging flag has been given. If it is then turn on the debugging flag.
+
 while [ $# -gt 0 ];
 do
     if [ "$1" == "--verbose" ]; then 
@@ -80,11 +92,15 @@ do
     fi
     shift
 done
-#---------------------------------------------------------------------------------------------------------    
-# This block of code will check to see if the .rm_backup folder is existing. If it is not then it will
-# - go and create the folder, or it will loop through the folder looking at all the files and delete
-# - any file / folder that is past the persisting time. I also make sure not to delete the following 
-# - items '.' or "..".
+#--------------------------------------------------------------------
+# This block of code will check to see if the .rm_backup folder existence
+# - and if it isn't available then the system will create it and the 
+# - backup folder. Next, I check to make sure if the backup directory
+# - existence and create it, if it doesn't exist. Lastly, if all the
+# - directories do exist, I will loop through the backup directory,
+# - stat all the files, ignoring the '.' and '..', and checking to make
+# - sure that the modification time has exceeded the persistence time.
+# - If it has then I will delete the item, else the system will move on.
 if [ ! -d $HOME/.rm_backup ]; then
     mkdir $HOME/.rm_backup/backup
 elif [ ! -d $HOME/.rm_backup/backup ]; then
@@ -109,19 +125,20 @@ else
         cd $pwd
     fi
 fi
-#---------------------------------------------------------------------------------------------------------
-# This block of code will loop through the incoming arguments. The first couple of checks that I make will
-# - will look for the "-r" and "-rf" command for folder removal. If I find it then I set a flag for the system
-# - to make sure to delete the folder and if I don't find it then the system will not delete any directory 
-# - is passed in. The next argument that I check is the error flag for debugging purposes. The next part is 
-# - the hard part about this system to support. So, I get the number of stars for the given argument, then
-# - check to see how many were found. If there was one found I make sure that the star is at the end of the 
-# - argument, if not then error out. Next, I check to see if there were two stars, if they are not at the end
-# - of the argument then error out. Lastly, I check to make sure that there are not more than two stars, if so 
-# - error out. The last part of this code checks to make sure if were looking at a file or directory. If a
-# - directory then make sure that we got the proper parameters. Then I make sure to see if the same file or 
-# - directory is in the .rm_backup and if it is then remove it so that the update version can be moved in.
-# - This is the basic overview of this section of code.
+#--------------------------------------------------------------------
+# This block of code will loop through the incoming arguments. The first 
+# - couple of checks that I make will will look for the "-r" and "-rf" 
+# - command for folder removal. If I they are found, then I set a flag 
+# - for the system to make sure to delete the folder and if they are not 
+# - found, then the system will not delete any directory that is passed in. 
+# - Next, the system is looking for stars. As the system loops through each
+# - section of input, it will search for stars. If the algorithm finds a
+# - star and it isn't at the end of the section, then error, if it finds
+# - two stars and they are not at the end then error, and any more stars then
+# - two, then error. Next, I check to see what is being deleted, and make
+# - sure that the proper arguments have been given. Next, I touch the file,
+# - to change the modification time, see if it is in the backup (if so, delete
+# - the backup), and then move the item to the backup.
 for i in "${incoming_input_array[@]}"
 do
     if [ $debug_switch -eq 1 ]; then echo "Looking at: $i"; fi
@@ -132,14 +149,15 @@ do
         # If there is one star found then its not in correct spot.
         if [ "$i" != ""* ]; then
             if [ $debug_switch -eq 1 ]; then echo "There are two reasons as to why the following doesn't work..."; fi
-            if [ $debug_switch -eq 1 ]; then echo "The directory that you entered is incorrect or This command is hard to support so don't use it..."; fi
-            echo "The argument: $i has an error, use the -error argument."
+            if [ $debug_switch -eq 1 ]; then echo " 1. The directory that you entered is incorrect."; fi
+            if [ $debug_switch -eq 1 ]; then echo " 2. The command is not supported and an issue needs to be filed."; fi
+            echo "The argument: $i has an error."
             exit
         fi
     elif [ $len -eq 2 ]; then
         # If there is two stars found then its not in the correct spot.
         if [ "$i" != ""**]; then
-            if [ $debug_switch -eq 1 ]; then echo "You have the stars in the incorrect places dude..."; fi
+            if [ $debug_switch -eq 1 ]; then echo "The stars are in the incorrect places..."; fi
             echo "The argument: $i is incorrect."
             exit
         fi
@@ -168,7 +186,6 @@ do
     else
         echo "Can't delete the following: $i, because its nonexistent."
     fi
-
     shift
 done
 #---------------------------------------------------------------------------------------------------------
