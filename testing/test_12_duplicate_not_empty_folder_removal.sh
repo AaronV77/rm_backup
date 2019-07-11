@@ -1,6 +1,7 @@
 mkdir something_1
 cd something_1
 touch something.txt
+cd ..
 $RUN -rf something_1
 folder_time_1=$(stat -c %Y $BACKUP/backup/something_1)
 file_time_1=$(stat -c %Y $BACKUP/backup/something_1/something.txt)
@@ -10,6 +11,7 @@ sleep 10
 mkdir something_1
 cd something_1
 touch something.txt
+cd ..
 $RUN -rf something_1
 folder_time_2=$(stat -c %Y $BACKUP/backup/something_1)
 file_time_2=$(stat -c %Y $BACKUP/backup/something_1/something.txt)
