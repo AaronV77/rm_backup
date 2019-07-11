@@ -3,7 +3,10 @@ $RUN something.txt
 
 cd $BACKUP
 directory_contents=(*)
+ls -la $BACKUP/backup
 /bin/rm -rf $BACKUP/backup/*
+echo ${#directory_contents[@]}
+
 if [ ${#directory_contents[@]} != 1 ]; then
     echo "There was something wrong with the contents of .rm_backup."
     exit 1

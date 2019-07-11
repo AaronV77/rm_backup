@@ -19,7 +19,6 @@ env:
 before_install: 
   - git clone https://github.com/AaronV77/rm_backup.git
   - ./setup.sh --test
-  - ls $HOME/.rm_backup/script
   - cd testing
 
 script:
