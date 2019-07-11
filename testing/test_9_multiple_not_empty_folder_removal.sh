@@ -1,15 +1,15 @@
 mkdir something_1
-cd something
+cd something_1
 touch something.txt
 cd ..
 
 mkdir something_2
-cd something
+cd something_2
 touch something.txt
 cd ..
 
 mkdir something_3
-cd something
+cd something_3
 touch something.txt
 cd ..
 
