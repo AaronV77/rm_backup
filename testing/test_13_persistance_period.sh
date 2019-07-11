@@ -1,7 +1,7 @@
 touch something_1.txt
 $RUN something_1.txt
 
-sleep 1m 10s
+sleep 70s
 
 touch something_2.txt
 $RUN something_2.txt
