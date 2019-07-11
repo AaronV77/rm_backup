@@ -127,8 +127,10 @@ sed -i -e 's/TOTAL-TIME/'$total_seconds'/g' copy_alias
 
 # Put the correct stat arguments in the file.
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
+    echo "We are using LINUX!"
     sed -i -e 's/ARGUMENTS/-c %Y/g' copy_alias
 elif [[ "$OSTYPE" == "darwin"* ]]; then
+    echo "We are using MAC!"
     sed -i -e 's/ARGUMENTS/-f %m/g' copy_alias
 else
     echo "ERROR: Can't tell what OS you have..."
@@ -141,9 +143,9 @@ if [ ! -d $HOME/.rm_backup/ ]; then mkdir $HOME/.rm_backup/; fi
 if [ ! -d $HOME/.rm_backup/script ]; then mkdir $HOME/.rm_backup/script; fi
 if [ ! -d $HOME/.rm_backup/backup ]; then mkdir $HOME/.rm_backup/backup; fi
 
-if [ $test_switch == 1 ]; then
-    occurences=$(grep -o "rm ()" $HOME/.bashrc | wc -l)
-    if [ $occurences == 0 ]; then
+occurences=$(grep -o "rm ()" $HOME/.bashrc | wc -l)
+if [ $occurences == 0 ]; then
+    if [ $test_switch == 0 ]; then
         if [[ "$OSTYPE" == "linux-gnu" ]]; then
             echo "rm () { bash $HOME/.rm_backup/script/rm_alias.sh \$@ ; }" >> $HOME/.bashrc
             echo "You need to source $HOME/.bashrc"
@@ -154,17 +156,17 @@ if [ $test_switch == 1 ]; then
             echo "You are using a operating system that is not supported."
             exit 1
         fi
-    elif [ $occurences == 1 ]; then
-        line_number=$(grep -nr "rm ()" $HOME/.bashrc | cut -d: -f1)
-        sed -i $line_number'd' $HOME/.bashrc
-    elif [ $occurences > 1 ]; then
-        if [[ "$OSTYPE" == "linux-gnu" ]]; then
-            echo "Your .bashrc is littered with rm () aliases, please clean up."
-        elif [[ "$OSTYPE" == "darwin"* ]]; then 
-            echo "Your .bash_profile is littered with rm () aliases, please clean up."
-        fi
-        exit 1
     fi
+elif [ $occurences == 1 ]; then
+    line_number=$(grep -nr "rm ()" $HOME/.bashrc | cut -d: -f1)
+    sed -i $line_number'd' $HOME/.bashrc
+elif [ $occurences > 1 ]; then
+    if [[ "$OSTYPE" == "linux-gnu" ]]; then
+        echo "Your .bashrc is littered with rm () aliases, please clean up."
+    elif [[ "$OSTYPE" == "darwin"* ]]; then 
+        echo "Your .bash_profile is littered with rm () aliases, please clean up."
+    fi
+    exit 1
 fi
 
 if [ -f $HOME/.rm_backup/script/rm_alias.sh ]; then /bin/rm $HOME/.rm_backup/script/rm_alias.sh; fi
