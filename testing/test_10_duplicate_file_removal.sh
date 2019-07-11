@@ -1,12 +1,12 @@
 touch something.txt
 $RUN something.txt
-file_time_1=$(stat -c %Y $HOME/backup/something.txt)
+file_time_1=$(stat -c %Y $BACKUP/backup/something.txt)
 
 sleep 10
 
 touch something.txt
 $RUN something.txt
-file_time_2=$(stat -c %Y $HOME/backup/something.txt)
+file_time_2=$(stat -c %Y $BACKUP/backup/something.txt)
 
 /bin/rm -rf $BACKUP/backup/*
 if [ $file_time_1 == $file_time_2 ]; then
