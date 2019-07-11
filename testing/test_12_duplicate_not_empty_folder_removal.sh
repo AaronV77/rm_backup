@@ -3,8 +3,13 @@ cd something_1
 touch something.txt
 cd ..
 $RUN -rf something_1
-folder_time_1=$(stat -c %Y $BACKUP/backup/something_1)
-file_time_1=$(stat -c %Y $BACKUP/backup/something_1/something.txt)
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+    folder_time_1=$(stat -c %Y $BACKUP/backup/something_1)
+    file_time_1=$(stat -c %Y $BACKUP/backup/something_1/something.txt)
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+    folder_time_1=$(stat -f %m $BACKUP/backup/something_1)
+    file_time_1=$(stat -f %m $BACKUP/backup/something_1/something.txt)
+fi
 
 sleep 10
 
@@ -13,8 +18,13 @@ cd something_1
 touch something.txt
 cd ..
 $RUN -rf something_1
-folder_time_2=$(stat -c %Y $BACKUP/backup/something_1)
-file_time_2=$(stat -c %Y $BACKUP/backup/something_1/something.txt)
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+    folder_time_2=$(stat -c %Y $BACKUP/backup/something_1)
+    file_time_2=$(stat -c %Y $BACKUP/backup/something_1/something.txt)
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+    folder_time_2=$(stat -f %m $BACKUP/backup/something_1)
+    file_time_2=$(stat -f %m $BACKUP/backup/something_1/something.txt)
+fi
 
 /bin/rm -rf $BACKUP/backup/*
 if [ $folder_time_1 == $folder_time_2 ]; then

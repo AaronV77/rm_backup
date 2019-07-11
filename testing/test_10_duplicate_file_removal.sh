@@ -1,12 +1,20 @@
 touch something.txt
 $RUN something.txt
-file_time_1=$(stat -c %Y $BACKUP/backup/something.txt)
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+    file_time_1=$(stat -c %Y $BACKUP/backup/something.txt)
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+    file_time_1=$(stat -f %m $BACKUP/backup/something.txt)
+fi
 
 sleep 10
 
 touch something.txt
 $RUN something.txt
-file_time_2=$(stat -c %Y $BACKUP/backup/something.txt)
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+    file_time_2=$(stat -c %Y $BACKUP/backup/something.txt)
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+    file_time_2=$(stat -f %m $BACKUP/backup/something.txt)
+fi
 
 /bin/rm -rf $BACKUP/backup/*
 if [ $file_time_1 == $file_time_2 ]; then

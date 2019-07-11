@@ -1,5 +1,6 @@
 
 occurences=$(grep -o "rm ()" $HOME/.bashrc | wc -l)
+echo "Number of occurences: $occurences"
 if [ $occurences == 1 ]; then
     line_number=$(grep -nr "rm ()" $HOME/.bashrc | cut -d: -f1)
     sed -i $line_number'd' $HOME/.bashrc

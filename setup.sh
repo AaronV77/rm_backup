@@ -130,7 +130,6 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
     sed -i -e 's/ARGUMENTS/-c %Y/g' copy_alias
 elif [[ "$OSTYPE" == "darwin"* ]]; then
     sed -i -e 's/ARGUMENTS/-f %m/g' copy_alias
-    cat copy_alias
 else
     echo "ERROR: Can't tell what OS you have..."
     if [ -f copy_alias ]; then /bin/rm copy_alias; fi
