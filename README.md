@@ -1,3 +1,4 @@
+&nbsp;Linux / Mac  
 [![Build Status](https://travis-ci.org/AaronV77/rm_backup.svg?branch=master)](https://travis-ci.org/AaronV77/rm_backup)
 
 # rm_backup
