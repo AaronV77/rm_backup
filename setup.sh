@@ -127,11 +127,10 @@ sed -i -e 's/TOTAL-TIME/'$total_seconds'/g' copy_alias
 
 # Put the correct stat arguments in the file.
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
-    echo "We are using LINUX!"
     sed -i -e 's/ARGUMENTS/-c %Y/g' copy_alias
 elif [[ "$OSTYPE" == "darwin"* ]]; then
-    echo "We are using MAC!"
     sed -i -e 's/ARGUMENTS/-f %m/g' copy_alias
+    cat copy_alias
 else
     echo "ERROR: Can't tell what OS you have..."
     if [ -f copy_alias ]; then /bin/rm copy_alias; fi
