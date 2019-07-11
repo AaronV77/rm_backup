@@ -108,12 +108,12 @@ if [ $test_switch == 0 ]; then
 
     get_numbers "Minutes"
     minutes=$temp
-else 
-    months=0
-    weeks=0
-    days=0
-    hours=0
-    minutes=1
+else
+    let months="0 * 30 * 24 * 3600"
+    let weeks="0 * 7 * 24 * 3600"
+    let days="0 * 24 * 3600"
+    let hours="0 * 3600"
+    let minutes="1 * 60"
 fi
 
 let total_seconds="$(($months))+$(($weeks))+$(($days))+$(($hours))+$(($minutes))"
