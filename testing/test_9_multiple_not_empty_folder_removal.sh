@@ -23,7 +23,7 @@ if [ $folder_1 != 3 ]; then
     echo "Not all three folders made their way to the backup correctly."
     exit 1
 fi
-if [ $folder_2 != 1 ] || [ $folder_3 != 1] || [ $folder_4 != 1 ]; then
+if [[ $folder_2 != 1 || $folder_3 != 1 || $folder_4 != 1 ]]; then
     echo "Not everything made it over to the backup in one of the folders."
     exit 1
 fi
