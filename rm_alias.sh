@@ -54,7 +54,7 @@ debug_switch=0
 backup_array=()
 incoming_input_array=()
 folder_removal=0
-total_duration=3600
+total_duration=TOTAL-TIME
 VERSION="1.0.6"
 current_time=$(date "+%s")
 system_home="$HOME/.rm_backup/backup"
@@ -96,7 +96,7 @@ else
         cd $system_home
         for file in {.,}*
         do  
-            file_time=$(stat -c %Y "$file")
+            file_time=$(stat ARGUMENTS "$file")
             if [ "$file" != '.' ] && [ "$file" != ".." ]; then
                 if [ $(($file_time + $total_duration)) -lt $(($current_time)) ]; then
                     if [ $debug_switch -eq 1 ]; then echo "Deleteing the following: $file"; fi
