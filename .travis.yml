@@ -25,11 +25,15 @@ script:
   - sh test_1_bash.sh || travis_terminate 1;
   - bash test_2_backup_dir.sh || travis_terminate 1;
   - bash test_3_file_removal.sh || travis_terminate 1;
-  - bash test_duplicate_empty_folder_removal.sh || travis_terminate 1;
-  - bash test_duplicate_file_removal.sh || travis_terminate 1;
-  - bash test_duplicate_not_empty_folder_removal.sh || travis_terminate 1;
-  - bash test_empty_folder_removal.sh || travis_terminate 1;
-
-  - bash test_non-existent_item.sh || travis_terminate 0;
-  - bash test_not_empty_folder_removal.sh || travis_terminate 1;
-  - bash test_persistance_period.sh || travis_terminate 1;
+  - bash test_4_empty_folder_removal.sh || travis_terminate 1;
+  - bash test_5_not_empty_folder_removal.sh || travis_terminate 1;
+  - bash test_6_non-existent_item.sh || travis_terminate 1;
+  - bash test_7_multiple_file_removal.sh || travis_terminate 1;
+  - bash test_8_multiple_empty_folder_removal || travis_terminate 1;
+  - bash test_9_multiple_not_empty_folder_removal || travis_terminate 1;
+  - bash test_10_duplicate_file_removal.sh || travis_terminate 1;
+  - bash test_11_duplicate_empty_folder_removal.sh || travis_terminate 1;
+  - bash test_12_duplicate_not_empty_folder_removal.sh || travis_terminate 1;
+  - bash test_13_persistance_period.sh || travis_terminate 1;
+  - bash test_14_star_folder_removal.sh || travis_terminate 1;
+  - bash test_15_cleanup.sh || travis_terminate 1;

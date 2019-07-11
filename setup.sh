@@ -113,7 +113,7 @@ else
     weeks=0
     days=0
     hours=0
-    minutes=2
+    minutes=1
 fi
 
 let total_seconds="$(($months))+$(($weeks))+$(($days))+$(($hours))+$(($minutes))"
