@@ -1,5 +1,5 @@
 mkdir something_1 something_2 something_3
-$RUN -rf something.txt something_2.txt something_3.txt
+$RUN -rf something_1 something_2 something_3
 number_of_files=$(ls -1 $BACKUP/backup| wc -l)
 /bin/rm -rf $BACKUP/backup/*
 if [ $number_of_files != 3 ]; then
