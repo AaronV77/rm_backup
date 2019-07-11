@@ -117,9 +117,6 @@ else
 fi
 
 let total_seconds="$(($months))+$(($weeks))+$(($days))+$(($hours))+$(($minutes))"
-echo "_-------------------_"
-echo "Total seconds: $total_seconds"
-echo "_-------------------_"
 #--------------------------------------------------------------------
 # Create a copy of the rm_alias file to not ruin the original copy.
 touch copy_alias
