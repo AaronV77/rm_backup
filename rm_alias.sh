@@ -68,7 +68,7 @@ debug_switch=0
 backup_array=()
 incoming_input_array=()
 folder_removal=0
-total_duration=3600
+total_duration=TOTAL-TIME
 VERSION="1.0.0"
 current_time=$(date "+%s")
 system_home="$HOME/.rm_backup/backup"
@@ -112,7 +112,7 @@ else
         cd $system_home
         for file in {.,}*
         do  
-            file_time=$(stat -c %Y "$file")
+            file_time=$(stat ARGUMENTS "$file")
             if [ "$file" != '.' ] && [ "$file" != ".." ]; then
                 if [ $(($file_time + $total_duration)) -lt $(($current_time)) ]; then
                     if [ $debug_switch -eq 1 ]; then echo "Deleteing the following: $file"; fi
@@ -147,7 +147,7 @@ do
     len=$(echo "$i" | tr -cd '*' | wc -c)
     if [ $len -eq 1 ]; then
         # If there is one star found then its not in correct spot.
-        if [ "${i: -1}" != "*" ]; then
+        if [ "$i: -1" != "*" ]; then
             if [ $debug_switch -eq 1 ]; then echo "There are two reasons as to why the following doesn't work..."; fi
             if [ $debug_switch -eq 1 ]; then echo " 1. The directory that you entered is incorrect."; fi
             if [ $debug_switch -eq 1 ]; then echo " 2. The command is not supported and an issue needs to be filed."; fi
@@ -156,7 +156,7 @@ do
         fi
     elif [ $len -eq 2 ]; then
         # If there is two stars found then its not in the correct spot.
-        if [ "${i: -2}" != "**"]; then
+        if [ "$i: -2" != "**"]; then
             if [ $debug_switch -eq 1 ]; then echo "The stars are in the incorrect places..."; fi
             echo "The argument: $i is incorrect."
             exit
