@@ -8,6 +8,7 @@
 # the system is able to clear out files with similar names by just using 
 # the single star (*) feature at the last similar character in the filename.
 #--------------------------------------------------------------------
+/bin/rm -rf $BACKUP/backup/*
 touch something_1.txt something_2.txt something_3.txt
 
 $RUN something_*
