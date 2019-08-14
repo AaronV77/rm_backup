@@ -9,7 +9,8 @@
 # the single star (*) feature at the last similar character in the filename.
 #--------------------------------------------------------------------
 touch something_1.txt something_2.txt something_3.txt
-
+echo "---------------------------------"
+ls $BACKUP/backup/*
 $RUN something_*
 number_of_files=$(ls -1 $BACKUP/backup | wc -l)
 # /bin/rm -rf $BACKUP/backup/*
