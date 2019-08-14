@@ -15,6 +15,7 @@ number_of_files=$(ls -1 $BACKUP/backup | wc -l)
 /bin/rm -rf $BACKUP/backup/*
 if [ $number_of_files != 3 ]; then
     echo "The files with similiar names all did not make it to the backup."
+    echo "Found: $number_of_files"
     exit 1
 fi
 exit 0
