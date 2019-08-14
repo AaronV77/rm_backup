@@ -36,4 +36,5 @@ script:
   - bash test_12_duplicate_not_empty_folder_removal.sh || travis_terminate 1;
   - bash test_13_persistance_period.sh || travis_terminate 1;
   - bash test_14_star_folder_removal.sh || travis_terminate 1;
-  - bash test_15_cleanup.sh || travis_terminate 1;
+  - bash test_15_filename_star_removal.sh || travis_terminate 1;
+  - bash test_16_cleanup.sh || travis_terminate 1;

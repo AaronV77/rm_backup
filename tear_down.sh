@@ -24,5 +24,6 @@ elif [ $((occurences)) -gt 1 ]; then
     fi
     exit 1
 fi
-if [ -d $BACKUP ]; then /bin/rm -rf $BACKUP; fi
+if [ -d $HOME/.rm_backup ]; then /bin/rm -rf $HOME/.rm_backup; fi
+
 #--------------------------------------------------------------------
