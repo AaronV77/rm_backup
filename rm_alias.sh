@@ -50,6 +50,8 @@ help() {
     echo "- rm -rf *"
     echo "- rm * /path/to/folder/*"
     echo "- rm -rf * /path/to/folder/*"
+    echo "- rm filename*"
+    echo "- rm *.txt" 
     echo "Note: There is support for a forward slash at the end of a directory."
 } 
 #--------------------------------------------------------------------
