@@ -147,7 +147,7 @@ do
     len=$(echo "$i" | tr -cd '*' | wc -c)
     if [ $len -eq 1 ]; then
         # If there is one star found then its not in correct spot.
-        if [ "$i" != ""* ]; then
+        if [ "$i: -1" != "*" ]; then
             if [ $debug_switch -eq 1 ]; then echo "There are two reasons as to why the following doesn't work..."; fi
             if [ $debug_switch -eq 1 ]; then echo " 1. The directory that you entered is incorrect."; fi
             if [ $debug_switch -eq 1 ]; then echo " 2. The command is not supported and an issue needs to be filed."; fi
@@ -156,7 +156,7 @@ do
         fi
     elif [ $len -eq 2 ]; then
         # If there is two stars found then its not in the correct spot.
-        if [ "$i" != ""**]; then
+        if [ "$i: -2" != "**"]; then
             if [ $debug_switch -eq 1 ]; then echo "The stars are in the incorrect places..."; fi
             echo "The argument: $i is incorrect."
             exit
