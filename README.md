@@ -23,20 +23,20 @@ A couple of warnings just to be helpful:
 
 ## Prerequisites
 
-The simplicity of this project is that all you need is to be using some type of Linux / Unix operating system and to be using the 
-The only prerequisites is that you need to use the Bash shell on your system in order to be able to use the script and alias. I have not supported the other shells yet and have only gotten this package to work with Bash. This application works on both Linux and Mac machines seemlessly "I hope lol". 
+The simplicity of this project is that all you need is to be using some type of Linux / Unix operating system and to be using the terminal. The only prerequisites is that you need to use the Bash shell on your system in order to be able to use the script and alias. I have not supported the other shells yet and have only gotten this package to work with Bash. This application works on both Linux and Mac machines. 
 
 ## Installing
 
-Just run the setup.sh script in the package directory and if you want to remove the package just run the tear_down.sh script. Both of these Bash scripts are straight forward.
+Just run the setup.sh script in the package directory and if you want to remove the package just run the tear_down.sh script. Both of these Bash scripts should be straight forward and if not then please read through the comments.
 
 ## Contributing
 
-Like I've said in the previous sections I hope that people get to use these scripts and contribute. Before submitting a PR, I've written a script call credential scan to remove any credentials that you could be stored in the scripts. There is a specific thing that the script is looking for so don't go stashing your IP address or Username anywhere else than needed. This will save a lot of hassel.. trust me, so run the script. 
+Like I've said in the previous sections I hope that people get to use these scripts and contribute. If there are issues then please let me know so that I can make the proper adjustments or if you think you have a better way then lets chat! 
 
 ## Support
 
 Here is a list of the following rm commands that this alias supports and anything else will be considered undefined behavior.
+
 - rm file
 - rm file-1 file-2 ...
 - rm -r folder
