@@ -69,7 +69,7 @@ backup_array=()
 incoming_input_array=()
 folder_removal=0
 total_duration=TOTAL-TIME
-VERSION="1.0.1"
+VERSION="1.1.2"
 current_time=$(date "+%s")
 system_home="$HOME/.rm_backup/backup"
 
