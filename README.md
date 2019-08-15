@@ -47,6 +47,8 @@ Here is a list of the following rm commands that this alias supports and anythin
 - rm -rf *
 - rm * /path/to/folder/*
 - rm -rf * /path/to/folder/*
+- rm filename*
+- rm *.txt
 
 Note: There is support for a forward slash at the end of a directory.
 
