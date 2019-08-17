@@ -19,6 +19,7 @@ fi
 occurences=$(grep -o "rm ()" $HOME/.$bash_file_type | wc -l)
 if [ $((occurences)) -eq 0 ]; then
     echo "There is no alias in your .$bash_file_type"
+    cat $HOME/.$bash_file_type
     exit 1
 fi
 
