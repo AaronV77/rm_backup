@@ -8,7 +8,7 @@
 #--------------------------------------------------------------------
 bash_file_type=0
 if [[ "$OSTYPE" == "darwin"* ]]; then
-    bash_file_type="bashrc_profile"
+    bash_file_type="bash_profile"
 elif [[ "$OSTYPE" == "linux-gnu" ]]; then
     bash_file_type="bashrc"
 else
