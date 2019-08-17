@@ -14,9 +14,9 @@
 # - users $HOME directory.
 bash_file_type=0
 if [[ "$OSTYPE" == "darwin"* ]]; then
-    bash_file_type=".bashrc_profile"
+    bash_file_type="bashrc_profile"
 elif [["$OSTYPE" == "linux-gn" ]]; then
-    bash_file_type=".bashrc"
+    bash_file_type="bashrc"
 else
     echo "Your OS is not supported..."
     exit 1;
