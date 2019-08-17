@@ -30,6 +30,5 @@ elif [ $((occurences)) -gt 1 ]; then
     echo "Your .$os_type is littered with rm () aliases, please clean up."
     exit 1
 fi
-
 if [ -d $HOME/.rm_backup ]; then /bin/rm -rf $HOME/.rm_backup; fi
 #--------------------------------------------------------------------
