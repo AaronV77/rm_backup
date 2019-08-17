@@ -1,6 +1,6 @@
 #--------------------------------------------------------------------
 #Author: Aaron Anthony Valoroso
-#Date: July 11th, 2019
+#Date: August 17th, 2019
 #License: GNU GENERAL PUBLIC LICENSE
 #Email: valoroso99@gmail.com
 #--------------------------------------------------------------------
@@ -12,16 +12,22 @@
 # - I will remove it, and if there are more than one occurence then I will
 # - print an error and exit. Lastly, I delete the .rm_backup directory in the
 # - users $HOME directory.
-occurences=$(grep -o "rm ()" $HOME/.bashrc | wc -l)
+bash_file_type=0
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    bash_file_type="bashrc_profile"
+elif [[ "$OSTYPE" == "linux-gnu" ]]; then
+    bash_file_type="bashrc"
+else
+    echo "Your OS is not supported..."
+    exit 1;
+fi
+
+occurences=$(grep -o "rm ()" $HOME/.$os_type | wc -l)
 if [ $((occurences)) -eq 1 ]; then
-    line_number=$(grep -nr "rm ()" $HOME/.bashrc | cut -d: -f1)
+    line_number=$(grep -nr "rm ()" $HOME/.$os_type | cut -d: -f1)
     sed -i $line_number'd' $HOME/.bashrc
 elif [ $((occurences)) -gt 1 ]; then
-    if [[ "$OSTYPE" == "linux-gnu" ]]; then
-        echo "Your .bashrc is littered with rm () aliases, please clean up."
-    elif [[ "$OSTYPE" == "darwin"* ]]; then 
-        echo "Your .bash_profile is littered with rm () aliases, please clean up."
-    fi
+    echo "Your .$os_type is littered with rm () aliases, please clean up."
     exit 1
 fi
 if [ -d $HOME/.rm_backup ]; then /bin/rm -rf $HOME/.rm_backup; fi

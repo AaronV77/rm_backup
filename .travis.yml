@@ -22,7 +22,8 @@ before_install:
   - cd testing
 
 script:
-  - sh test_1_bash.sh || travis_terminate 1;
+  - sh test_0_bash.sh || travis_terminate 1;
+  - bash test_1_setup.sh || travis_terminate 1;
   - bash test_2_backup_dir.sh || travis_terminate 1;
   - bash test_3_file_removal.sh || travis_terminate 1;
   - bash test_4_empty_folder_removal.sh || travis_terminate 1;
