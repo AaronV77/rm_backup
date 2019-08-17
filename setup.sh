@@ -186,17 +186,15 @@ if [ ! -d $HOME/.rm_backup/backup ]; then mkdir $HOME/.rm_backup/backup; fi
 # - delete it  and  movet he new script into its position with the correct
 # - permissions. I then delete the copy file for the rm script.
 occurences=$(grep -o "rm ()" $HOME/.$bash_file_type | wc -l)
-if [ $test_switch == 0 ]; then
-    if [ $occurences == 0 ]; then
-        echo "rm () { bash $HOME/.rm_backup/script/rm_alias.sh \$@ ; }" >> $HOME/.$bash_file_type
-        echo "You need to source $HOME/.$bash_file_type"
-    elif [ $occurences == 1 ]; then
-        line_number=$(grep -nr "rm ()" $HOME/.$bash_file_type | cut -d: -f1)
-        sed -i $line_number'd' $HOME/.$bash_file_type
-    elif [ $occurences > 1 ]; then
-        echo "Your .$bash_file_type is littered with rm () aliases, please clean up."
-        exit 1
-    fi
+if [ $occurences == 0 ]; then
+    echo "rm () { bash $HOME/.rm_backup/script/rm_alias.sh \$@ ; }" >> $HOME/.$bash_file_type
+    echo "You need to source $HOME/.$bash_file_type"
+elif [ $occurences == 1 ]; then
+    line_number=$(grep -nr "rm ()" $HOME/.$bash_file_type | cut -d: -f1)
+    sed -i $line_number'd' $HOME/.$bash_file_type
+elif [ $occurences > 1 ]; then
+    echo "Your .$bash_file_type is littered with rm () aliases, please clean up."
+    exit 1
 fi
 
 if [ -f $HOME/.rm_backup/script/rm_alias.sh ]; then /bin/rm $HOME/.rm_backup/script/rm_alias.sh; fi
