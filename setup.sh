@@ -1,6 +1,6 @@
 #--------------------------------------------------------------------
 #Author: Aaron Anthony Valoroso
-#Date: July 11th, 2019
+#Date: August 16th, 2019
 #License: GNU GENERAL PUBLIC LICENSE
 #Email: valoroso99@gmail.com
 #--------------------------------------------------------------------
@@ -95,6 +95,21 @@ get_numbers () {
 # - to setup the system for testing purposes.
 re='^[0-9]*$'
 test_switch=0
+bash_file_type=0
+sed_args=0
+
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+    sed_args="s/ARGUMENTS/-c %Y/g"
+    bash_file_type="bashrc"
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+    sed_args="s/ARGUMENTS/-f %m/g"
+    bash_file_type="bash_profile"
+else
+    echo "ERROR: Can't tell what OS you have..."
+    if [ -f copy_alias ]; then /bin/rm copy_alias; fi
+    if [ -f copy_alias-e ]; then /bin/rm copy_alias-e; fi
+    exit 1
+fi
 
 while [ $# -gt 0 ];
 do
@@ -152,17 +167,7 @@ touch copy_alias
 cat rm_alias.sh >> copy_alias
 
 sed -i -e 's/TOTAL-TIME/'$total_seconds'/g' copy_alias
-
-if [[ "$OSTYPE" == "linux-gnu" ]]; then
-    sed -i -e 's/ARGUMENTS/-c %Y/g' copy_alias
-elif [[ "$OSTYPE" == "darwin"* ]]; then
-    sed -i -e 's/ARGUMENTS/-f %m/g' copy_alias
-else
-    echo "ERROR: Can't tell what OS you have..."
-    if [ -f copy_alias ]; then /bin/rm copy_alias; fi
-    if [ -f copy_alias-e ]; then /bin/rm copy_alias-e; fi
-    exit 1
-fi
+sed -i -e $sed_args copy_alias
 
 if [ ! -d $HOME/.rm_backup/ ]; then mkdir $HOME/.rm_backup/; fi
 if [ ! -d $HOME/.rm_backup/script ]; then mkdir $HOME/.rm_backup/script; fi
@@ -180,28 +185,16 @@ if [ ! -d $HOME/.rm_backup/backup ]; then mkdir $HOME/.rm_backup/backup; fi
 # - to see if there is a rm_alias script in the script directory, if so just
 # - delete it  and  movet he new script into its position with the correct
 # - permissions. I then delete the copy file for the rm script.
-occurences=$(grep -o "rm ()" $HOME/.bashrc | wc -l)
+occurences=$(grep -o "rm ()" $HOME/.$bash_file_type | wc -l)
 if [ $test_switch == 0 ]; then
     if [ $occurences == 0 ]; then
-        if [[ "$OSTYPE" == "linux-gnu" ]]; then
-            echo "rm () { bash $HOME/.rm_backup/script/rm_alias.sh \$@ ; }" >> $HOME/.bashrc
-            echo "You need to source $HOME/.bashrc"
-        elif [[ "$OSTYPE" == "darwin"* ]]; then 
-            echo "rm () { bash $HOME/.rm_backup/script/rm_alias.sh \$@ ; }" >> $HOME/.bash_profile
-            echo "You need to source $HOME/.bash_profile"
-        else 
-            echo "You are using a operating system that is not supported."
-            exit 1
-        fi
+        echo "rm () { bash $HOME/.rm_backup/script/rm_alias.sh \$@ ; }" >> $HOME/.$bash_file_type
+        echo "You need to source $HOME/.$bash_file_type"
     elif [ $occurences == 1 ]; then
-        line_number=$(grep -nr "rm ()" $HOME/.bashrc | cut -d: -f1)
-        sed -i $line_number'd' $HOME/.bashrc
+        line_number=$(grep -nr "rm ()" $HOME/.$bash_file_type | cut -d: -f1)
+        sed -i $line_number'd' $HOME/.$bash_file_type
     elif [ $occurences > 1 ]; then
-        if [[ "$OSTYPE" == "linux-gnu" ]]; then
-            echo "Your .bashrc is littered with rm () aliases, please clean up."
-        elif [[ "$OSTYPE" == "darwin"* ]]; then 
-            echo "Your .bash_profile is littered with rm () aliases, please clean up."
-        fi
+        echo "Your .$bash_file_type is littered with rm () aliases, please clean up."
         exit 1
     fi
 fi
