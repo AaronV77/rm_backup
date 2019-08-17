@@ -167,7 +167,7 @@ touch copy_alias
 cat rm_alias.sh >> copy_alias
 
 sed -i -e 's/TOTAL-TIME/'$total_seconds'/g' copy_alias
-sed -i -e $sed_args copy_alias
+sed -i -e "$sed_args" copy_alias
 
 if [ ! -d $HOME/.rm_backup/ ]; then mkdir $HOME/.rm_backup/; fi
 if [ ! -d $HOME/.rm_backup/script ]; then mkdir $HOME/.rm_backup/script; fi
