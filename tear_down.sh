@@ -22,12 +22,12 @@ else
     exit 1;
 fi
 
-occurences=$(grep -o "rm ()" $HOME/.$os_type | wc -l)
+occurences=$(grep -o "rm ()" $HOME/.$bash_file_type | wc -l)
 if [ $((occurences)) -eq 1 ]; then
-    line_number=$(grep -nr "rm ()" $HOME/.$os_type | cut -d: -f1)
+    line_number=$(grep -nr "rm ()" $HOME/.$bash_file_type | cut -d: -f1)
     sed -i $line_number'd' $HOME/.bashrc
 elif [ $((occurences)) -gt 1 ]; then
-    echo "Your .$os_type is littered with rm () aliases, please clean up."
+    echo "Your .$bash_file_type is littered with rm () aliases, please clean up."
     exit 1
 fi
 if [ -d $HOME/.rm_backup ]; then /bin/rm -rf $HOME/.rm_backup; fi
