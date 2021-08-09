@@ -187,7 +187,7 @@ if [ ! -d $HOME/.rm_backup/backup ]; then mkdir $HOME/.rm_backup/backup; fi
 # - permissions. I then delete the copy file for the rm script.
 occurences=$(grep -o "rm ()" $HOME/.$bash_file_type | wc -l)
 if [ $occurences == 0 ]; then
-    echo "rm () { bash $HOME/.rm_backup/script/rm_alias.sh \$@ ; }" >> $HOME/.$bash_file_type
+    echo "rm () { bash $HOME/.rm_backup/script/rm_alias.sh \"\$@\" ; }" >> $HOME/.$bash_file_type
     echo "You need to source $HOME/.$bash_file_type"
 elif [ $occurences == 1 ]; then
     line_number=$(grep -nr "rm ()" $HOME/.$bash_file_type | cut -d: -f1)
