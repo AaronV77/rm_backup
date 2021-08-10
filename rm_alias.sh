@@ -1,6 +1,6 @@
 #--------------------------------------------------------------------
 #Author: Aaron Anthony Valoroso
-#Date: July 11th, 2019
+#Date: August 9th, 2021
 #License: GNU GENERAL PUBLIC LICENSE
 #Email: valoroso99@gmail.com
 #--------------------------------------------------------------------
@@ -12,28 +12,31 @@
 # - folder, else do nothing and move on. 
 is_in_backup() {
     incoming_arg=$(echo "${1%/}")
-    if [ $debug_switch -eq 1 ]; then echo "Searching..."; fi
+    if [ $debug_switch -eq 1 ]; then echo -e "\tDEBUG: Searching..."; fi
     for item in "${backup_array[@]}"; do
-        if [ $debug_switch -eq 1 ]; then echo "The backup look at: $item and $incoming_arg"; fi
+        if [ $debug_switch -eq 1 ]; then echo -e "\tDEBUG: The backup look at: $item and $incoming_arg"; fi
         if [ "$item" == "$incoming_arg" ]; then
-            if [ $debug_switch -eq 1 ]; then echo "Found..."; fi
+            if [ $debug_switch -eq 1 ]; then echo -e "\tDEBUG: Found..."; fi
             /bin/rm -rf $system_home/$item
         fi
     done
 }
+
 #--------------------------------------------------------------------
 # This simple function will output all the information needed when the 
 # - argument "--help" has been issued. If the help argument has been 
 # - issued and the user is trying to do anything else then, the system 
 # - will exit without doing anything else.
 help() {
-    echo "Welcome to the rm_backup utility! If you are confused as to why you are seeing this, it is due"
-    echo "- someone installing the rm_backup utility. This program overrides the rm command, to be able to"
-    echo "- uninstall this utility, remove the alias either in your .bashrc or .bash_profile. This utility"
-    echo "- will give a user a second chance to save your files / directories. For more information please"
-    echo "- go to the following: https://github.com/AaronV77/rm_backup"
+    echo "Welcome to the rm_backup utility! If you are confused as to why you are seeing this, it is due to"
+    echo "- someone installing the rm_backup utility. This utility overrides the rm command and gives users"
+    echo "- a second chance to save your files / directories from being permantley deleted. There are options"
+    echo "- to recover the removed file but they are a pain and don't always work. For more information please"
+    echo "- go to the following link: https://github.com/AaronV77/rm_backup . To uninstall this utility,"
+    echo "- remove the bash alias from your .bashrc in your home directory and remove the directory .rm_backup"
+    echo "- that is also in your home directory."
     echo ""
-    echo "Following arguments for this utility:"
+    echo "Following arguments for this utility are:"
     echo "--dump:       Will delete everything in the .rm_backup directory."
     echo "--verbose:    Will turn on the debugger and output helpful print statments."
     echo "--help:       Will display this helpful message."
@@ -54,6 +57,7 @@ help() {
     echo "- rm *.txt" 
     echo "Note: There is support for a forward slash at the end of a directory."
 } 
+
 #--------------------------------------------------------------------
 # The following variables are declared for the system and here is a list 
 # - of what they mean / do:
@@ -71,7 +75,7 @@ backup_array=()
 incoming_input_array=()
 folder_removal=0
 total_duration=TOTAL-TIME
-VERSION="1.3.5"
+VERSION="1.3.8"
 current_time=$(date "+%s")
 system_home="$HOME/.rm_backup/backup"
 
@@ -94,6 +98,7 @@ do
     fi
     shift
 done
+
 #--------------------------------------------------------------------
 # This block of code will check to see if the .rm_backup folder existence
 # - and if it isn't available then the system will create it and the 
@@ -109,7 +114,7 @@ elif [ ! -d $HOME/.rm_backup/backup ]; then
     mkdir $HOME/.rm_backup/backup
 else
     if [ "$(find "$system_home" -mindepth 1 -print -quit 2>/dev/null)" ]; then
-        if [ $debug_switch -eq 1 ]; then echo "Looping through the rm_backup directory..."; fi
+        if [ $debug_switch -eq 1 ]; then echo -e "\tDEBUG: Looping through the rm_backup directory..."; fi
         pwd=$(pwd)
         cd $system_home
         for file in {.,}*
@@ -117,7 +122,7 @@ else
             file_time=$(stat ARGUMENTS "$file")
             if [ "$file" != '.' ] && [ "$file" != ".." ]; then
                 if [ $(($file_time + $total_duration)) -lt $(($current_time)) ]; then
-                    if [ $debug_switch -eq 1 ]; then echo "Deleteing the following: $file"; fi
+                    if [ $debug_switch -eq 1 ]; then echo -e "\tDEBUG: Deleteing the following: $file"; fi
                     if [ -d "$file" ]; then /bin/rm -rf "$file"; else /bin/rm "$file"; fi
                 else
                     backup_array+=($file)
@@ -127,6 +132,7 @@ else
         cd $pwd
     fi
 fi
+
 #--------------------------------------------------------------------
 # This block of code will loop through the incoming arguments. The first 
 # - couple of checks that I make will will look for the "-r" and "-rf" 
@@ -143,50 +149,53 @@ fi
 # - the backup), and then move the item to the backup.
 for i in "${incoming_input_array[@]}"
 do
-    if [ $debug_switch -eq 1 ]; then echo "Looking at: $i"; fi
+    if [ $debug_switch -eq 1 ]; then echo -e "\tDEBUG: Looking at: $i"; fi
     if [ "$i" == "-rf" ] || [ "$i" == "-r" ]; then folder_removal=1; shift; continue; fi
 
     len=$(echo "$i" | tr -cd '*' | wc -c)
     if [ $len -eq 1 ]; then
         # If there is one star found then its not in correct spot.
         if [ "$i: -1" != "*" ]; then
-            if [ $debug_switch -eq 1 ]; then echo "There are two reasons as to why the following doesn't work..."; fi
-            if [ $debug_switch -eq 1 ]; then echo " 1. The directory that you entered is incorrect."; fi
-            if [ $debug_switch -eq 1 ]; then echo " 2. The command is not supported and an issue needs to be filed."; fi
-            echo "The argument: $i has an error."
+            if [ $debug_switch -eq 1 ]; then echo -e "\tDEBUG: There are two reasons as to why the following doesn't work..."; fi
+            if [ $debug_switch -eq 1 ]; then echo -e "\tDEBUG:  1. The directory that you entered is incorrect."; fi
+            if [ $debug_switch -eq 1 ]; then echo -e "\tDEBUG:  2. The command is not supported and an issue needs to be filed."; fi
+            echo "\tERROR: The argument: $i has an error."
             exit
         fi
     elif [ $len -eq 2 ]; then
         # If there is two stars found then its not in the correct spot.
         if [ "$i: -2" != "**"]; then
-            if [ $debug_switch -eq 1 ]; then echo "The stars are in the incorrect places..."; fi
-            echo "The argument: $i is incorrect."
+            if [ $debug_switch -eq 1 ]; then echo -e "\tDEBUG: The stars are in the incorrect places..."; fi
+            echo -e "\tERROR: The argument: $i is incorrect."
             exit
         fi
     elif [ $len -ge 2 ]; then
-        if [ $debug_switch -eq 1 ]; then echo "There are to many stars in the given argument..."; fi
-        echo "The argument: $i is incorrect."
+        if [ $debug_switch -eq 1 ]; then echo -e "\tDEBUG: There are to many stars in the given argument..."; fi
+        echo -e "\tERROR: The argument: $i is incorrect."
         exit
     fi
 
-    if [ $debug_switch -eq 1 ]; then echo "Processing: $i"; fi
+    if [ $debug_switch -eq 1 ]; then echo -e "\tDEBUG: Processing: $i"; fi
 
-    if [ -d "$i" ]; then
+    if [ -L "$i" ]; then
+	if [ $debug_switch -eq 1 ]; then echo -e "\tDEBUG: Found a symbolic link and will be removing it."; fi
+        /bin/rm "$i"
+    elif [ -d "$i" ]; then
         if [ $folder_removal -eq 1 ]; then 
             touch "$i"
-            if [ $debug_switch -eq 1 ]; then echo "Backing up the following item: $i"; fi
+            if [ $debug_switch -eq 1 ]; then echo -e "\tDEBUG: Backing up the following item: $i"; fi
             is_in_backup "$i"
             mv "$i" $system_home
         else
-            echo "Can't delete the following: $i, because its a directory."
+            echo -e "\tERROR: Can't delete the following: $i, because its a directory."
         fi
     elif [ -f "$i" ]; then
         touch "$i"
-        if [ $debug_switch -eq 1 ]; then echo "Backing up the following item: $i"; fi
+        if [ $debug_switch -eq 1 ]; then echo -e "\tERROR: Backing up the following item: $i"; fi
         is_in_backup "$i"
         mv "$i" $system_home
     else
-        echo "Can't delete the following: $i, because its nonexistent."
+        echo -e "\tERROR: Can't delete the following: $i, because its nonexistent."
     fi
     shift
 done
