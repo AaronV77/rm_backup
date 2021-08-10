@@ -21,6 +21,7 @@ is_in_backup() {
         fi
     done
 }
+
 #--------------------------------------------------------------------
 # This simple function will output all the information needed when the 
 # - argument "--help" has been issued. If the help argument has been 
@@ -54,6 +55,7 @@ help() {
     echo "- rm *.txt" 
     echo "Note: There is support for a forward slash at the end of a directory."
 } 
+
 #--------------------------------------------------------------------
 # The following variables are declared for the system and here is a list 
 # - of what they mean / do:
@@ -94,6 +96,7 @@ do
     fi
     shift
 done
+
 #--------------------------------------------------------------------
 # This block of code will check to see if the .rm_backup folder existence
 # - and if it isn't available then the system will create it and the 
@@ -127,6 +130,7 @@ else
         cd $pwd
     fi
 fi
+
 #--------------------------------------------------------------------
 # This block of code will loop through the incoming arguments. The first 
 # - couple of checks that I make will will look for the "-r" and "-rf" 
@@ -171,7 +175,10 @@ do
 
     if [ $debug_switch -eq 1 ]; then echo "Processing: $i"; fi
 
-    if [ -d "$i" ]; then
+    if [ -L "$i" ]; then
+	if [ $debug_switch -eq 1 ]; then echo "Found a symbolic link and will be removing it."; fi
+        /bin/rm "$i"
+    elif [ -d "$i" ]; then
         if [ $folder_removal -eq 1 ]; then 
             touch "$i"
             if [ $debug_switch -eq 1 ]; then echo "Backing up the following item: $i"; fi
