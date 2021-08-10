@@ -38,4 +38,7 @@ script:
   - bash test_13_persistance_period.sh || travis_terminate 1;
   - bash test_14_star_folder_removal.sh || travis_terminate 1;
   - bash test_15_filename_star_removal.sh || travis_terminate 1;
-  - bash test_16_cleanup.sh || travis_terminate 1;
+  - bash test_16_symbolic_link_file_removal.sh || travis_terminate 1;
+  - bash test_17_filename_with_spaces_removal.sh || travis_terminate 1;
+  - bash test_18_folder_name_with_spaces_removal.sh || travis_terminate 1;
+  - bash test_19_cleanup.sh || travis_terminate 1;
