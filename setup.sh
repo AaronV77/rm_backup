@@ -17,7 +17,6 @@ cleanup () {
     echo -e "\tCleaning up...."
 
     if [ -f copy_alias ]; then /bin/rm copy_alias; fi
-    if [ -f copy_alias-e ]; then /bin/rm copy_alias-e; fi
 
     echo "Exiting..."
     cd $current_directory || cd $HOME
@@ -107,7 +106,6 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
 else
     echo "ERROR: Can't tell what OS you have..."
     if [ -f copy_alias ]; then /bin/rm copy_alias; fi
-    if [ -f copy_alias-e ]; then /bin/rm copy_alias-e; fi
     exit 1
 fi
 
@@ -190,17 +188,15 @@ if [ $occurences == 0 ]; then
     echo "rm () { bash $HOME/.rm_backup/script/rm_alias.sh \"\$@\" ; }" >> $HOME/.$bash_file_type
     echo "You need to source $HOME/.$bash_file_type"
 elif [ $occurences == 1 ]; then
-    line_number=$(grep -nr "rm ()" $HOME/.$bash_file_type | cut -d: -f1)
-    sed -i $line_number'd' $HOME/.$bash_file_type
+    echo "You should be good to go!"
 elif [ $occurences > 1 ]; then
     echo "Your .$bash_file_type is littered with rm () aliases, please clean up."
     exit 1
 fi
 
 if [ -f $HOME/.rm_backup/script/rm_alias.sh ]; then /bin/rm $HOME/.rm_backup/script/rm_alias.sh; fi
+
 cat copy_alias >> $HOME/.rm_backup/script/rm_alias.sh
 chmod 775 $HOME/.rm_backup/script/rm_alias.sh
 
 if [ -f copy_alias ]; then /bin/rm copy_alias; fi
-if [ -f copy_alias-e ]; then /bin/rm copy_alias-e; fi
-#--------------------------------------------------------------------
